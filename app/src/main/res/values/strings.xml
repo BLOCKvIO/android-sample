@@ -1,0 +1,142 @@
+<resources>
+  <string name="app_name">AndroidSdk</string>
+  <!--Landing page-->
+  <!--BlockV Android Example-->
+  <string name="landing_page_title">BlockV Android Example</string>
+  <!--Login-->
+  <string name="landing_page_login">Log In</string>
+  <!--Register-->
+  <string name="landing_page_register">Register</string>
+
+  <!--Login page-->
+  <!--User Login-->
+  <string name="login_page_title">User Login</string>
+  <!--Login-->
+  <string name="login_page_login">Log In</string>
+  <!--Logging in…-->
+  <string name="login_page_dialog_logging_in">Logging in…</string>
+  <!--Password-->
+  <string name="login_page_password_hint">Password</string>
+  <!--Incorrect Password-->
+  <string name="login_page_incorrect_password">Incorrect Password</string>
+  <!--User does not exist-->
+  <string name="login_page_user_does_not_exists">User does not exist</string>
+  <!--Send One Time Password-->
+  <string name="login_page_otp">Reset Password</string>
+  <!--Sending otp…-->
+  <string name="login_page_dialog_sending_otp">Resetting password…</string>
+  <!--One Time Password-->
+  <string name="login_page_otp_sent">Success!</string>
+  <!--Phone Number-->
+  <string name="login_page_phone_number">Phone Number</string>
+  <!--Email-->
+  <string name="login_page_email">Email</string>
+
+  <!--Phone Number Login-->
+  <!--Enter Phone with country code eg (+1)-->
+  <string name="login_page_phone_title">Enter International Formatted Phone Number</string>
+  <!-- (+1)000-000-0000-->
+  <string name="login_page_phone_hint">(+1)000–000–0000</string>
+  <!--Email Login-->
+  <!--Enter Email Address-->
+  <string name="login_page_email_title">Enter Email Address</string>
+  <!--example@blockv.io-->
+  <string name="login_page_email_hint">example@blockv.io</string>
+
+  <!--Register page-->
+  <!--Register New User-->
+  <string name="register_page_title">Register New User</string>
+  <!--Enter Phone with country code eg (+1)-->
+  <string name="register_page_phone_title">Enter International Formatted Phone Number</string>
+  <!--Enter Phone with country code eg (+1)-->
+  <string name="register_page_phone_hint">(+1)000–000–0000</string>
+  <!--Register-->
+  <string name="register_page_register">Register</string>
+  <!--Registering…-->
+  <string name="register_page_dialog_registering">Registering…</string>
+  <!--Success!-->
+  <string name="register_page_success">Success!</string>
+  <!--A User with this phone number already exists-->
+  <string name="register_page_user_already_exists">A User with this phone number already exists</string>
+  <!--Please enter a your phone number-->
+  <string name="register_page_phone_number_cant_be_blank">Please enter a your phone number</string>
+  <!--Your phone number requires to be in international format-->
+  <string name="register_page_phone_number_must_be_international">Your phone number requires to be in international format</string>
+  <!--First Name-->
+  <string name="register_page_first_name_hint">First Name</string>
+  <!--Last Name-->
+  <string name="register_page_last_name_hint">Last Name</string>
+  <!--Birthday-->
+  <string name="register_page_birthday_hint">Birthday</string>
+  <!--Password-->
+  <string name="register_page_password_hint">Password</string>
+  <!--Email-->
+  <string name="register_page_email_hint">Email</string>
+
+  <!--Verify page-->
+  <!--Verify-->
+  <string name="verify_page_title">Verify User</string>
+  <!--Enter OTP sent to phone number-->
+  <string name="verify_page_otp_hint">Enter OTP sent to phone number</string>
+  <!--Verify-->
+  <string name="verify_page_verify">Verify</string>
+  <!--Verifying…-->
+  <string name="verify_page_verifying">Verifying…</string>
+  <!--Resend OTP-->
+  <string name="verify_page_resend_otp">Resend OTP</string>
+  <!--Success!-->
+  <string name="verify_page_success">Success!</string>
+  <!--Sending…-->
+  <string name="verify_page_sending">Sending…</string>
+  <!--Phone Number-->
+  <string name="verify_page_phone_number">Phone Number</string>
+  <!--Email-->
+  <string name="verify_page_email">Email</string>
+  <!--example@blockv.io-->
+  <string name="verify_page_email_hint">example@blockv.io</string>
+  <!--(+1)000–000–0000-->
+  <string name="verify_page_phone_hint">(+1)000–000–0000</string>
+  <!--Skip-->
+  <string name="verify_page_skip">Skip</string>
+
+  <!--Group page-->
+  <!--User Group-->
+  <string name="inventory_page_title">User Inventory</string>
+  <!--Profile-->
+  <string name="inventory_page_profile">Profile</string>
+
+  <!--Profile page-->
+  <!--User Profile-->
+  <string name="profile_page_title">User Profile</string>
+  <!--First Name-->
+  <string name="profile_page_first_name">First Name</string>
+  <!--Last Name-->
+  <string name="profile_page_last_name">Last Name</string>
+  <!--Update Password-->
+  <string name="profile_page_password">Password</string>
+  <!--Save-->
+  <string name="profile_page_save">Save</string>
+  <!--Logout-->
+  <string name="profile_page_logout">Log Out</string>
+  <!--Logout-->
+  <string name="profile_page_birthday">Birthday</string>
+  <!--Saving-->
+  <string name="profile_page_saving">Saving…</string>
+  <!--Uploading…-->
+  <string name="profile_page_uploading">Uploading…</string>
+  <!--Logging Out…-->
+  <string name="profile_page_logging_out">Logging Out…</string>
+  <!--Restarting…-->
+  <string name="profile_page_restarting">Restarting…</string>
+  <!--Loading…-->
+  <string name="profile_page_loading">Loading…</string>
+
+  <!-- Vatom page -->
+  <!--Loading…-->
+  <string name="vatom_page_loading">Loading…</string>
+  <!--vAtom Details-->
+  <string name="vatom_page_title">vAtom Details</string>
+  <!--No vAtom found with id-->
+  <string name="vatom_page_no_vatom">No vAtom found with id</string>
+
+</resources>
