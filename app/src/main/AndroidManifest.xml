@@ -28,6 +28,7 @@
     <activity
       android:name="io.blockv.example.feature.landing.LandingActivity"
       android:label="@string/landing_page_title"
+      android:screenOrientation="portrait"
       >
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -37,26 +38,32 @@
     <activity
       android:name="io.blockv.example.feature.login.LoginActivity"
       android:label="@string/login_page_title"
+      android:screenOrientation="portrait"
       />
     <activity
       android:name="io.blockv.example.feature.register.RegisterActivity"
       android:label="@string/register_page_title"
+      android:screenOrientation="portrait"
       />
     <activity
       android:name="io.blockv.example.feature.verify.VerifyActivity"
       android:label="@string/verify_page_title"
+      android:screenOrientation="portrait"
       />
     <activity
       android:name="io.blockv.example.feature.inventory.InventoryActivity"
       android:label="@string/inventory_page_title"
+      android:screenOrientation="portrait"
       />
     <activity
       android:name="io.blockv.example.feature.profile.ProfileActivity"
       android:label="@string/profile_page_title"
+      android:screenOrientation="portrait"
       />
     <activity
       android:name="io.blockv.example.feature.activated.VatomActivity"
       android:label="@string/vatom_page_title"
+      android:screenOrientation="portrait"
       />
   </application>
 

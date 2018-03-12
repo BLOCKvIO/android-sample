@@ -51,7 +51,6 @@ dependencies {
 
   // Image and Gif
   compile 'com.squareup.picasso:picasso:2.5.2'
-  compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
   // Process restart
   compile 'com.jakewharton:process-phoenix:1.1.1'

@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">AndroidSdk</string>
+  <string name="app_name">Blockv Example</string>
   <!--Landing page-->
   <!--BlockV Android Example-->
   <string name="landing_page_title">BlockV Android Example</string>
@@ -76,8 +76,8 @@
   <!--Verify page-->
   <!--Verify-->
   <string name="verify_page_title">Verify User</string>
-  <!--Enter OTP sent to phone number-->
-  <string name="verify_page_otp_hint">Enter OTP sent to phone number</string>
+  <!--Enter One Time Password-->
+  <string name="verify_page_otp_hint">Enter One Time Password</string>
   <!--Verify-->
   <string name="verify_page_verify">Verify</string>
   <!--Verifying…-->
