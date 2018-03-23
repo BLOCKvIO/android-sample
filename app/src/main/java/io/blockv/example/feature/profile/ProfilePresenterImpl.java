@@ -37,6 +37,11 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
+    reload();
+  }
+
+  void reload()
+  {
 
     screen.showDialog(getString(R.string.profile_page_loading));
     //fetch the current logged in user's details
@@ -67,9 +72,7 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
           screen.showToast(throwable.getMessage());
         }));
 
-
   }
-
   @Override
   public void onDestroy() {
     dispose();
@@ -158,6 +161,8 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
                   .subscribe(
                     Void -> {
                       screen.hideDialog();
+                      reload();
+
                     },
                     throwable -> {
                       screen.hideDialog();

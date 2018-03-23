@@ -24,7 +24,7 @@ public class BlockvModule {
   @Singleton
   @Provides
   public Blockv provideBlockv() {
-    return new Blockv(context,"<replace-with-your-app-id>");//creates the blockv singleton
+    return new Blockv(context,"d7eaf120-4214-434e-b3c9-2b373ea3fa63");//creates the blockv singleton
   }
 
 
