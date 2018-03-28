@@ -21,7 +21,7 @@ public class LoginEmailPresenterImpl extends BasePresenter implements LoginEmail
     collect(
       userManager
         .login(token, UserManager.TokenType.EMAIL, password)
-        .subscribe(user -> {
+        .call(user -> {
           //on success you will receive a user model containing the user's details
             screen.hideDialog();
             screen.startInventoryActivity();
@@ -41,7 +41,7 @@ public class LoginEmailPresenterImpl extends BasePresenter implements LoginEmail
     collect(
       userManager
         .resetToken(user, UserManager.TokenType.EMAIL)
-        .subscribe(Void -> {
+        .call(Void -> {
           screen.hideDialog();
           screen.showToast(getString(R.string.login_page_otp_sent));
         }, throwable -> {

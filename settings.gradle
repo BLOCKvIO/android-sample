@@ -1,5 +1,4 @@
-include ':app', ':core'
-project(':core').projectDir = new File(settingsDir, '../BlockVKotlinSdk/core')
+include ':app'
 
 
 

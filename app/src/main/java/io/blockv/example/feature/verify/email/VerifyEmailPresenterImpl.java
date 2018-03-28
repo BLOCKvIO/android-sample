@@ -29,7 +29,7 @@ public class VerifyEmailPresenterImpl extends BasePresenter implements VerifyEma
     collect(
       userManager
         .verifyUserToken(email, UserManager.TokenType.EMAIL, code)
-        .subscribe(Void -> {
+        .call(Void -> {
           screen.showToast(getString(R.string.verify_page_success));
           screen.startInventoryActivity();
           screen.hideDialog();
@@ -44,7 +44,7 @@ public class VerifyEmailPresenterImpl extends BasePresenter implements VerifyEma
     screen.showDialog(getString(R.string.verify_page_sending));
     //request a new verification code
     collect(userManager.resendVerification(email, UserManager.TokenType.EMAIL)
-      .subscribe(Void -> {
+      .call(Void -> {
           screen.hideDialog();
           screen.showToast(getString(R.string.verify_page_success));
         },

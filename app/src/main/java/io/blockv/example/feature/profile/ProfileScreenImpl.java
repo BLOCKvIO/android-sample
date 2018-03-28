@@ -17,10 +17,6 @@ import java.util.List;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 
 
-/**
- * Created by LordCheddar on 2018/01/10.
- */
-
 public class ProfileScreenImpl extends BaseScreen implements ProfileScreen {
 
 

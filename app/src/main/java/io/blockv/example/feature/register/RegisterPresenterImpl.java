@@ -33,7 +33,7 @@ public class RegisterPresenterImpl extends BasePresenter implements RegisterPres
         .addEmail(email)
         .addPhoneNumber(phoneNumber.replaceAll("[()\\-\\s]", ""))
         .build())
-      .subscribe(user -> {
+      .call(user -> {
         //on success you will receive a user model containing the user's details
         screen.showToast(getString(R.string.register_page_success));
         screen.startVerifyActivity(phoneNumber.replaceAll("[()\\-\\s]", ""), email);

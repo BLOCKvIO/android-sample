@@ -19,7 +19,7 @@ public class LoginPhonePresenterImpl extends BasePresenter implements LoginPhone
     screen.showDialog(getString(R.string.login_page_dialog_logging_in));
     ///attempt to login using the provided phone number address and password
     collect(userManager.login(token, UserManager.TokenType.PHONE_NUMBER, password)
-      .subscribe(user -> {
+      .call(user -> {
           //on success you will receive a user model containing the user's details
           screen.hideDialog();
           screen.startInventoryActivity();
@@ -37,7 +37,7 @@ public class LoginPhonePresenterImpl extends BasePresenter implements LoginPhone
     //attempt to reset the users password, on success an OTP to be sent to the provided phone number
     collect(userManager
       .resetToken(user, UserManager.TokenType.PHONE_NUMBER)
-      .subscribe(Void -> {
+      .call(Void -> {
         screen.hideDialog();
         screen.showToast(getString(R.string.login_page_otp_sent));
       }, throwable -> {

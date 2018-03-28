@@ -12,10 +12,9 @@ import android.support.media.ExifInterface;
 import android.view.MenuItem;
 import android.view.View;
 import io.blockv.core.client.builder.UpdateUserBuilder;
-import io.blockv.core.util.Observable;
+import io.blockv.core.util.Callable;
 import io.blockv.example.R;
 import io.blockv.example.feature.BasePresenter;
-import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
 
 import java.io.IOException;
@@ -47,7 +46,7 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
     //fetch the current logged in user's details
     collect(userManager
       .getCurrentUser()
-      .subscribe(
+      .call(
         user -> {
           if (user != null) {
             screen.setUserId(user.getId());
@@ -58,7 +57,7 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
             //fetch the current user's tokens
             collect(
               userManager.getCurrentUserTokens()
-                .subscribe(tokens -> {
+                .call(tokens -> {
                   screen.setTokens(tokens);
                   screen.hideDialog();
                 }, throwable -> {
@@ -97,7 +96,7 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
         .setLastName(lastName)
         .setBirthday(birthday)
         .build()
-    ).subscribe(user -> {
+    ).call(user -> {
       screen.hideDialog();
       screen.setUserId(user.getId());
       screen.setFirstName(user.getFirstName());
@@ -116,7 +115,7 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
     collect(userManager.updateCurrentUser(new UpdateUserBuilder()
       .setPassword(password)
       .build()
-    ).subscribe(user -> screen.hideDialog(), throwable -> {
+    ).call(user -> screen.hideDialog(), throwable -> {
       screen.showToast(throwable.getMessage());
       screen.hideDialog();
     }));
@@ -131,7 +130,7 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
     //log the current user out
     userManager
       .logout()
-      .subscribe(ok -> {
+      .call(ok -> {
         screen.hideDialog();
         screen.restartApp();
       }, throwable -> {
@@ -155,10 +154,10 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
           screen.showDialog(getString(R.string.profile_page_uploading));
           collect(
             loadAvatar(selectedImage)
-              .subscribe(avatar -> {
+              .call(avatar -> {
                 //update the current user's avatar
                 collect(userManager.uploadAvatar(avatar)
-                  .subscribe(
+                  .call(
                     Void -> {
                       screen.hideDialog();
                       reload();
@@ -183,10 +182,9 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
    * Loads an image from file and scales it down and crops it
    * @param uri is the uri an image file
    */
-  Observable<Bitmap> loadAvatar(Uri uri) {
+  Callable<Bitmap> loadAvatar(Uri uri) {
 
-    return new Observable<Bitmap>() {
-      @Nullable
+    return new Callable<Bitmap>() {
       @Override
       public Bitmap getResult() throws IOException {
         Matrix matrix = new Matrix();

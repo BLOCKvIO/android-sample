@@ -24,7 +24,7 @@ public class InventoryPresenterImpl extends BasePresenter implements InventoryPr
     ///load the user's vAtoms from root inventory
     collect(vatomManager
       .getInventory(".")//inventory id "." is root
-      .subscribe(group -> {
+      .call(group -> {
           if (group != null) {
             screen.setVatoms(group.getVatoms());
           }

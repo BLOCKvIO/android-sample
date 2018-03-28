@@ -30,7 +30,7 @@ public class VatomPresenterImpl extends BasePresenter implements VatomPresenter 
     //get vatom by id
     collect(vatomManager
       .getVatoms(vatomId)
-      .subscribe(group->{
+      .call(group->{
         screen.hideDialog();
         if (group != null && group.getVatoms().size() > 0) {
           screen.setVatom(group.getVatoms().get(0));

@@ -9,9 +9,6 @@ import io.blockv.example.feature.BaseScreen;
 import io.blockv.example.feature.inventory.InventoryActivity;
 
 
-/**
- * Created by LordCheddar on 2018/01/10.
- */
 
 public class LoginPhoneScreenImpl extends BaseScreen implements LoginPhoneScreen {
 

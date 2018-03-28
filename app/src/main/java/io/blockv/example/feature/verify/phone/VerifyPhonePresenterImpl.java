@@ -30,7 +30,7 @@ public class VerifyPhonePresenterImpl extends BasePresenter implements VerifyPho
     collect(
       userManager
         .verifyUserToken(phoneNumber, UserManager.TokenType.PHONE_NUMBER, code)
-        .subscribe(Void -> {
+        .call(Void -> {
           screen.showToast(getString(R.string.verify_page_success));
           screen.startInventoryActivity();
           screen.hideDialog();
@@ -45,7 +45,7 @@ public class VerifyPhonePresenterImpl extends BasePresenter implements VerifyPho
     screen.showDialog(getString(R.string.verify_page_sending));
     //request a new verification code
     collect(userManager.resendVerification(phoneNumber, UserManager.TokenType.PHONE_NUMBER)
-      .subscribe(Void -> {
+      .call(Void -> {
           screen.hideDialog();
           screen.showToast(getString(R.string.verify_page_success));
         },
