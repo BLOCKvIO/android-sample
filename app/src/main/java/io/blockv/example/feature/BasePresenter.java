@@ -4,18 +4,18 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.StringRes;
+import io.blockv.core.client.manager.ActivityManager;
+import io.blockv.core.client.manager.EventManager;
 import io.blockv.core.client.manager.UserManager;
 import io.blockv.core.client.manager.VatomManager;
-import io.blockv.core.util.CompositeCancellable;
 import io.blockv.core.util.Cancellable;
+import io.blockv.core.util.CompositeCancellable;
 import io.blockv.example.Injector;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 
-public class BasePresenter
-{
+public class BasePresenter {
 
   final CompositeCancellable disposables;
 
@@ -28,6 +28,11 @@ public class BasePresenter
   @Inject
   protected VatomManager vatomManager;
 
+  @Inject
+  protected EventManager eventManager;
+
+  @Inject
+  protected ActivityManager activityManager;
 
   protected Handler handler = new Handler(Looper.getMainLooper());
 
@@ -37,7 +42,7 @@ public class BasePresenter
   }
 
   public void collect(Cancellable disposable) {
-    if(disposable!=null) {
+    if (disposable != null) {
       disposables.add(disposable);
     }
   }

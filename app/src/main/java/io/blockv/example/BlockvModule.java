@@ -4,8 +4,7 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import io.blockv.core.client.Blockv;
-import io.blockv.core.client.manager.UserManager;
-import io.blockv.core.client.manager.VatomManager;
+import io.blockv.core.client.manager.*;
 
 import javax.inject.Singleton;
 
@@ -24,9 +23,8 @@ public class BlockvModule {
   @Singleton
   @Provides
   public Blockv provideBlockv() {
-    return new Blockv(context,"<replace-with-app-id>");//creates the blockv singleton
+    return new Blockv(context, "<replace-with-app-id>");//creates the blockv singleton
   }
-
 
   @Singleton
   @Provides
@@ -38,6 +36,24 @@ public class BlockvModule {
   @Provides
   public VatomManager provideVatomManager(Blockv blockv) {
     return blockv.getVatomManager();
+  }
+
+  @Singleton
+  @Provides
+  public EventManager provideEventManager(Blockv blockv) {
+    return blockv.getEventManager();
+  }
+
+  @Singleton
+  @Provides
+  public ResourceManager provideResourceManager(Blockv blockv) {
+    return blockv.getResourceManager();
+  }
+
+  @Singleton
+  @Provides
+  public ActivityManager provideActivityManager(Blockv blockv) {
+    return blockv.getActivityManager();
   }
 
 }
