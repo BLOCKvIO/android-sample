@@ -13,7 +13,6 @@ public class LoginPhonePresenterImpl extends BasePresenter implements LoginPhone
     this.screen = screen;
   }
 
-
   @Override
   public void onLoginButtonClick(View view, String token, String password) {
     screen.showDialog(getString(R.string.login_page_dialog_logging_in));

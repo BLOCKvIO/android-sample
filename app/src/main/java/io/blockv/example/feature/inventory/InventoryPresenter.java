@@ -14,7 +14,7 @@ public interface InventoryPresenter {
 
   void onResume();
 
-  void onDestroy();
+  void onPause();
 
   void onOptionsItemSelected(MenuItem menuItem);
 }

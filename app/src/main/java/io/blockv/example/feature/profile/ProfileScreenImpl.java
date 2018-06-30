@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.*;
 import com.jakewharton.processphoenix.ProcessPhoenix;
+import io.blockv.core.client.manager.ResourceManager;
 import io.blockv.core.model.Token;
 import io.blockv.example.R;
 import io.blockv.example.feature.BaseScreen;
@@ -92,9 +93,14 @@ public class ProfileScreenImpl extends BaseScreen implements ProfileScreen {
   public void setAvatar(String url) {
     Timber.e(url);
     if (url != null) {
-
+      try {
+        //add asset provider credentials
+        url = resourceManager.encodeUrl(url);
+      } catch (ResourceManager.MissingAssetProviderException e) {
+        Timber.w(e.getMessage());
+      }
       picasso
-        .load(url)
+        .load(resourceManager.encodeUrl(url))
         .placeholder(R.drawable.ic_add_grey_back)
         .error(R.drawable.ic_add_grey_back)
         .into(avatar);

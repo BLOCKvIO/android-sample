@@ -17,7 +17,6 @@ import io.blockv.example.R;
 import io.blockv.example.feature.BasePresenter;
 import timber.log.Timber;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 
@@ -39,8 +38,7 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
     reload();
   }
 
-  void reload()
-  {
+  void reload() {
 
     screen.showDialog(getString(R.string.profile_page_loading));
     //fetch the current logged in user's details
@@ -72,6 +70,7 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
         }));
 
   }
+
   @Override
   public void onDestroy() {
     dispose();
@@ -180,70 +179,69 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
 
   /**
    * Loads an image from file and scales it down and crops it
+   *
    * @param uri is the uri an image file
    */
   Callable<Bitmap> loadAvatar(Uri uri) {
 
-    return new Callable<Bitmap>() {
-      @Override
-      public Bitmap getResult() throws IOException {
-        Matrix matrix = new Matrix();
-        try {
-          InputStream inputStream = contentResolver.openInputStream(uri);
-          ExifInterface exif = new ExifInterface(inputStream);
-          int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-          int rotationInDegrees = rotation == ExifInterface.ORIENTATION_ROTATE_90 ?
-            90 : rotation == ExifInterface.ORIENTATION_ROTATE_180 ?
-            180 : rotation == ExifInterface.ORIENTATION_ROTATE_270 ?
-            270 :
-            0;
-          if (rotation != 0f) {
-            matrix.preRotate(rotationInDegrees);
-          }
-        } catch (Exception e) {
-          Timber.e(e.getMessage());
+    return Callable.Companion.<Bitmap>singleResult((Callable.OnSingleResult<Bitmap>) () -> {
+
+      Matrix matrix = new Matrix();
+      try {
+        InputStream inputStream = contentResolver.openInputStream(uri);
+        ExifInterface exif = new ExifInterface(inputStream);
+        int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        int rotationInDegrees = rotation == ExifInterface.ORIENTATION_ROTATE_90 ?
+          90 : rotation == ExifInterface.ORIENTATION_ROTATE_180 ?
+          180 : rotation == ExifInterface.ORIENTATION_ROTATE_270 ?
+          270 :
+          0;
+        if (rotation != 0f) {
+          matrix.preRotate(rotationInDegrees);
         }
-
-        InputStream input = contentResolver.openInputStream(uri);
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(input, null, options);
-        input.close();
-        // Now load a subsampled image - that's no larger than the dimensions of the screen
-        options.inJustDecodeBounds = false;
-        options.inSampleSize = calculateInSampleSize(options, 500, 500);
-        //should return the image but sampled down
-        input = contentResolver.openInputStream(uri);
-        Bitmap orignal = BitmapFactory.decodeStream(input, null, options);
-        input.close();
-        Bitmap out;
-        if (orignal.getWidth() >= orignal.getHeight()) {
-          out = Bitmap.createBitmap(
-            orignal,
-            orignal.getWidth() / 2 - orignal.getHeight() / 2,
-            0,
-            orignal.getHeight(),
-            orignal.getHeight(),
-            matrix,
-            true
-          );
-
-        } else {
-          out = Bitmap.createBitmap(
-            orignal,
-            0,
-            orignal.getHeight() / 2 - orignal.getWidth() / 2,
-            orignal.getWidth(),
-            orignal.getWidth(),
-            matrix,
-            true
-          );
-        }
-
-        return out;
+      } catch (Exception e) {
+        Timber.e(e.getMessage());
       }
-    };
+
+      InputStream input = contentResolver.openInputStream(uri);
+
+      BitmapFactory.Options options = new BitmapFactory.Options();
+      options.inJustDecodeBounds = true;
+      BitmapFactory.decodeStream(input, null, options);
+      input.close();
+      // Now load a subsampled image - that's no larger than the dimensions of the screen
+      options.inJustDecodeBounds = false;
+      options.inSampleSize = calculateInSampleSize(options, 500, 500);
+      //should return the image but sampled down
+      input = contentResolver.openInputStream(uri);
+      Bitmap orignal = BitmapFactory.decodeStream(input, null, options);
+      input.close();
+      Bitmap out;
+      if (orignal.getWidth() >= orignal.getHeight()) {
+        out = Bitmap.createBitmap(
+          orignal,
+          orignal.getWidth() / 2 - orignal.getHeight() / 2,
+          0,
+          orignal.getHeight(),
+          orignal.getHeight(),
+          matrix,
+          true
+        );
+
+      } else {
+        out = Bitmap.createBitmap(
+          orignal,
+          0,
+          orignal.getHeight() / 2 - orignal.getWidth() / 2,
+          orignal.getWidth(),
+          orignal.getWidth(),
+          matrix,
+          true
+        );
+      }
+
+      return out;
+    });
   }
 
   public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
