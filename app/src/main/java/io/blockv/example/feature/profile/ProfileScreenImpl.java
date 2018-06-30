@@ -100,7 +100,7 @@ public class ProfileScreenImpl extends BaseScreen implements ProfileScreen {
         Timber.w(e.getMessage());
       }
       picasso
-        .load(resourceManager.encodeUrl(url))
+        .load(url)
         .placeholder(R.drawable.ic_add_grey_back)
         .error(R.drawable.ic_add_grey_back)
         .into(avatar);
