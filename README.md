@@ -5,7 +5,7 @@ Android example application demoing features of the Blockv platform
 
 <h2>Contents</h2>
 
-This example demos the following features of the Blockv Android Sdk
+This example demos the following features of the BLOCKv Android Sdk
 
 * **Checking if a user is logged in**. [Code](https://github.com/BLOCKvIO/android-example/blob/master/app/src/main/java/io/blockv/example/feature/landing/LandingPresenterImpl.java#L17)
 
@@ -59,4 +59,3 @@ To build the sample after you have applied the changes above, use the build/run 
 <h3>Dependencies</h3>
 
 1. [Dagger 2](https://github.com/google/dagger) for singleton management
-1. [Retro lambda](https://github.com/evant/gradle-retrolambda)  for lambda functions
