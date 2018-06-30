@@ -23,8 +23,8 @@ public class InventoryScreenImpl extends BaseScreen implements InventoryScreen {
     activity.setSupportActionBar(toolbar);
 
     list = activity.findViewById(R.id.list);
-    adapter = new InventoryAdapter(vatomManager,picasso);
-    list.setLayoutManager(new GridLayoutManager(activity,2));
+    adapter = new InventoryAdapter(vatomManager, resourceManager, picasso);
+    list.setLayoutManager(new GridLayoutManager(activity, 2));
     list.setAdapter(adapter);
   }
 

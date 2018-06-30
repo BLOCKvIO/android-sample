@@ -39,7 +39,12 @@ public class InventoryActivity extends BaseActivity {
 
   public void onDestroy() {
     super.onDestroy();
-    presenter.onDestroy();
+  }
+
+  public void onPause()
+  {
+    super.onPause();
+    presenter.onPause();
   }
 
   @Override

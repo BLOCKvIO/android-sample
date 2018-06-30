@@ -19,8 +19,8 @@ public class InventoryPresenterImpl extends BasePresenter implements InventoryPr
   public void onCreate(Bundle savedInstanceState) {
   }
 
-  public void onResume()
-  {
+  public void onResume() {
+
     ///load the user's vAtoms from root inventory
     collect(vatomManager
       .getInventory(".")//inventory id "." is root
@@ -34,7 +34,7 @@ public class InventoryPresenterImpl extends BasePresenter implements InventoryPr
   }
 
   @Override
-  public void onDestroy() {
+  public void onPause() {
     dispose();
   }
 

@@ -3,10 +3,11 @@ package io.blockv.example.feature.inventory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import io.blockv.example.R;
+import com.squareup.picasso.Picasso;
+import io.blockv.core.client.manager.ResourceManager;
 import io.blockv.core.client.manager.VatomManager;
 import io.blockv.core.model.Vatom;
-import com.squareup.picasso.Picasso;
+import io.blockv.example.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +21,14 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
 
   final VatomManager vatomManager;
 
-  public InventoryAdapter(VatomManager vatomManager, Picasso picasso) {
+  final ResourceManager resourceManager;
+
+  public InventoryAdapter(VatomManager vatomManager,
+                          ResourceManager resourceManager,
+                          Picasso picasso) {
     this.picasso = picasso;
     this.vatomManager = vatomManager;
+    this.resourceManager = resourceManager;
   }
 
   @Override
@@ -30,6 +36,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
     return new InventoryViewHolder(
       LayoutInflater.from(parent.getContext()).inflate(R.layout.view_vatom_list_item, parent, false),
       vatomManager,
+      resourceManager,
       picasso);
   }
 

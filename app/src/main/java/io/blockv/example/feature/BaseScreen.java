@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.squareup.picasso.Picasso;
+import io.blockv.core.client.manager.ResourceManager;
 import io.blockv.core.client.manager.VatomManager;
 import io.blockv.example.Injector;
 import io.blockv.example.R;
@@ -23,6 +24,9 @@ public class BaseScreen {
 
   @Inject
   protected VatomManager vatomManager;
+
+  @Inject
+  protected ResourceManager resourceManager;
 
   volatile Dialog progress;
 
