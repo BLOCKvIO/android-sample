@@ -1,5 +1,6 @@
 package io.blockv.example.feature.inventory;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import io.blockv.core.model.Vatom;
@@ -14,6 +15,7 @@ public class InventoryScreenImpl extends BaseScreen implements InventoryScreen {
 
   final android.support.v7.widget.Toolbar toolbar;
   final RecyclerView list;
+  final SwipeRefreshLayout refresh;
   final InventoryAdapter adapter;
 
   public InventoryScreenImpl(InventoryActivity activity) {
@@ -23,6 +25,7 @@ public class InventoryScreenImpl extends BaseScreen implements InventoryScreen {
     activity.setSupportActionBar(toolbar);
 
     list = activity.findViewById(R.id.list);
+    refresh = activity.findViewById(R.id.swipe_refresh);
     adapter = new InventoryAdapter(vatomManager, resourceManager, picasso);
     list.setLayoutManager(new GridLayoutManager(activity, 2));
     list.setAdapter(adapter);
@@ -30,11 +33,17 @@ public class InventoryScreenImpl extends BaseScreen implements InventoryScreen {
 
   @Override
   public void registerEvents(InventoryPresenter presenter) {
+    refresh.setOnRefreshListener(presenter::onSwipeRefresh);
   }
 
   @Override
   public void setVatoms(List<Vatom> vatoms) {
     adapter.setItems(vatoms);
+  }
+
+  @Override
+  public void showRefreshing(boolean show) {
+    refresh.setRefreshing(show);
   }
 
   @Override

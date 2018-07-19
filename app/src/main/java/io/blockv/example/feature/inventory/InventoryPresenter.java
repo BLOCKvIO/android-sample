@@ -17,4 +17,6 @@ public interface InventoryPresenter {
   void onPause();
 
   void onOptionsItemSelected(MenuItem menuItem);
+
+  void onSwipeRefresh();
 }

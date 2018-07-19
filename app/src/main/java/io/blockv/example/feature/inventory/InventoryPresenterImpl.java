@@ -20,17 +20,7 @@ public class InventoryPresenterImpl extends BasePresenter implements InventoryPr
   }
 
   public void onResume() {
-
-    ///load the user's vAtoms from root inventory
-    collect(vatomManager
-      .getInventory(".")//inventory id "." is root
-      .call(group -> {
-          if (group != null) {
-            screen.setVatoms(group.getVatoms());
-          }
-        },
-        throwable -> Timber.e(throwable.getMessage())
-      ));
+    refresh();
   }
 
   @Override
@@ -45,5 +35,25 @@ public class InventoryPresenterImpl extends BasePresenter implements InventoryPr
       screen.startProfileActivity();
     }
 
+  }
+
+  @Override
+  public void onSwipeRefresh() {
+    refresh();
+  }
+
+  private void refresh() {
+    dispose();
+    ///load the user's vAtoms from root inventory
+    collect(vatomManager
+      .getInventory(".")//inventory id "." is root
+      .call(group -> {
+          if (group != null) {
+            screen.setVatoms(group.getVatoms());
+          }
+          screen.showRefreshing(false);
+        },
+        throwable -> Timber.e(throwable.getMessage())
+      ));
   }
 }
