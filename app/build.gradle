@@ -61,7 +61,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
   // BLOCKv sdk
-  implementation 'io.blockv.sdk:core:1.0.0'
+  implementation 'io.blockv.sdk:core:1.1.0'
 
   // Web Socket
   // (Optional) This is only required if you want to use the web socket.
