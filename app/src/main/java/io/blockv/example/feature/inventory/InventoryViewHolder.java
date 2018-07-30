@@ -45,17 +45,19 @@ public class InventoryViewHolder extends RecyclerView.ViewHolder {
     if (resource != null) {
       //load activated image
       String resourceUrl = resource.getUrl();
-      try {
-        //add asset provider credentials
-        resourceUrl = resourceManager.encodeUrl(resourceUrl);
-      } catch (ResourceManager.MissingAssetProviderException e) {
-        Timber.w(e.getMessage());
-      }
-      picasso
-        .load(resourceUrl)
-        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-        .error(R.drawable.ic_error)
-        .into(imageView);
+      resourceManager.encodeWithCredentials(resourceUrl)
+        .call(url -> picasso
+          .load(url)
+          .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+          .error(R.drawable.ic_error)
+          .into(imageView), throwable -> {
+          Timber.e(throwable.getMessage());
+          //encoding failed, attempting to load resource anyway
+          picasso
+            .load(resourceUrl)
+            .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+            .error(R.drawable.ic_error);
+        });
 
       imageView.setOnClickListener(view -> view.getContext().startActivity(VatomActivity.getIntent(view.getContext(), vatom.getId())));
     }
