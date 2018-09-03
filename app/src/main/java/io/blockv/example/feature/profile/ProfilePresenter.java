@@ -6,7 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 /**
- * VatomMetaPresenter handles business logic for VatomActivity
+ * ProfilePresenter handles business logic for VatomActivity
  * @see ProfileActivity
  */
 

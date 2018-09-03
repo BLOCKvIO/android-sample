@@ -4,13 +4,13 @@ import io.blockv.core.model.Vatom;
 
 import java.util.List;
 
-
 /**
  * InventoryScreen handles screen layout and navigation for InventoryActivity
  *
  * @see InventoryActivity
  */
 public interface InventoryScreen {
+
   void registerEvents(InventoryPresenter presenter);
 
   void setVatoms(List<Vatom> vatoms);
