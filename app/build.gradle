@@ -61,7 +61,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
   // BLOCKv sdk
-  implementation 'io.blockv.sdk:core:1.1.0'
+  // implementation 'io.blockv.sdk:core:1.1.0'
 
   // Web Socket
   // (Optional) This is only required if you want to use the web socket.
@@ -73,5 +73,8 @@ dependencies {
   //implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
   //implementation 'io.reactivex.rxjava2:rxjava:2.1.6'
   //implementation 'io.blockv.sdk:rx:1.0.0'
+
+  implementation project(":core")
+  implementation project(":face")
 
 }

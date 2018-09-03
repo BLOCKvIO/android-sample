@@ -1,1 +1,3 @@
-include ':app'
+include ':app',':core',':face'
+project(':core').projectDir = new File(settingsDir, '../blockv-kotlin-sdk/core')
+project(':face').projectDir = new File(settingsDir, '../blockv-kotlin-sdk/face')
