@@ -52,11 +52,11 @@ public class InventoryPresenterImpl extends BasePresenter implements InventoryPr
     collect(
       vatomManager
         .getInventory(".", 1, 100)//inventory id "." is root
-        .call(group -> {
-            if (group != null) {
+        .call(vatoms -> {
+            if (vatoms != null) {
               //filter out vAtoms
               List<Vatom> out = new ArrayList<>();
-              for (Vatom vatom : group.getVatoms()) {
+              for (Vatom vatom : vatoms) {
                 if (!vatom.getProperty().isDropped()//Filter out dropped vAtoms
                   && !vatom.getProperty().getTemplateId().endsWith("::vAtom::Avatar")//filter out avatar vAtoms
                   && !vatom.getProperty().getTemplateId().endsWith("::vAtom::CoinWallet")//filter out wallet vAtoms
