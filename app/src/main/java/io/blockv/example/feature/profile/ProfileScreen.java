@@ -5,7 +5,7 @@ import io.blockv.core.model.Token;
 import java.util.List;
 
 /**
- * VatomScreen handles screen layout for VatomActivity
+ * VatomMetaScreen handles screen layout for VatomActivity
  * @see ProfileActivity
  */
 

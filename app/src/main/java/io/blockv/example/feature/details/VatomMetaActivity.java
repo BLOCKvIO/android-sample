@@ -1,4 +1,4 @@
-package io.blockv.example.feature.activated;
+package io.blockv.example.feature.details;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,26 +9,26 @@ import io.blockv.example.constants.Extras;
 import io.blockv.example.feature.BaseActivity;
 
 /**
- * The VatomActivity demonstrates fetching a vatom by id
+ * The VatomMetaActivity demonstrates fetching a vatom by id
  *
- * @see VatomPresenterImpl
+ * @see VatomMetaPresenterImpl
  */
-public class VatomActivity extends BaseActivity {
+public class VatomMetaActivity extends BaseActivity {
 
   public static Intent getIntent(Context context, String vatomId) {
-    Intent intent = new Intent(context, VatomActivity.class);
+    Intent intent = new Intent(context, VatomMetaActivity.class);
     intent.putExtra(Extras.VATOM_ID, vatomId);
     return intent;
   }
 
-  VatomPresenter presenter;
+  VatomMetaPresenter presenter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_vatom);
-    VatomScreen screen = new VatomScreenImpl(this);
-    presenter = new VatomPresenterImpl(screen);
+    VatomMetaScreen screen = new VatomMetaScreenImpl(this);
+    presenter = new VatomMetaPresenterImpl(screen);
     screen.registerEvents(presenter);
     presenter.onCreate(getIntent());
   }

@@ -1,4 +1,4 @@
-package io.blockv.example.feature.activated;
+package io.blockv.example.feature.details;
 
 import android.content.Intent;
 import android.text.TextUtils;
@@ -8,11 +8,11 @@ import io.blockv.example.constants.Extras;
 import io.blockv.example.feature.BasePresenter;
 
 
-public class VatomPresenterImpl extends BasePresenter implements VatomPresenter {
+public class VatomMetaPresenterImpl extends BasePresenter implements VatomMetaPresenter {
 
-  private final VatomScreen screen;
+  private final VatomMetaScreen screen;
 
-  public VatomPresenterImpl(VatomScreen screen) {
+  public VatomMetaPresenterImpl(VatomMetaScreen screen) {
     this.screen = screen;
   }
 

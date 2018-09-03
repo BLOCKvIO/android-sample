@@ -9,7 +9,7 @@ import io.blockv.core.client.manager.VatomManager;
 import io.blockv.core.model.Resource;
 import io.blockv.core.model.Vatom;
 import io.blockv.example.R;
-import io.blockv.example.feature.activated.VatomActivity;
+import io.blockv.example.feature.details.VatomMetaActivity;
 import timber.log.Timber;
 
 public class InventoryViewHolder extends RecyclerView.ViewHolder {
@@ -57,7 +57,7 @@ public class InventoryViewHolder extends RecyclerView.ViewHolder {
         .error(R.drawable.ic_error)
         .into(imageView);
 
-      imageView.setOnClickListener(view -> view.getContext().startActivity(VatomActivity.getIntent(view.getContext(), vatom.getId())));
+      imageView.setOnClickListener(view -> view.getContext().startActivity(VatomMetaActivity.getIntent(view.getContext(), vatom.getId())));
     }
 
   }

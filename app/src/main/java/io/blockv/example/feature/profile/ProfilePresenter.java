@@ -6,14 +6,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 /**
- * VatomPresenter handles business logic for VatomActivity
+ * VatomMetaPresenter handles business logic for VatomActivity
  * @see ProfileActivity
  */
 
 public interface ProfilePresenter {
 
   /**
-   *  Load the user's details on activity create and update VatomScreen
+   *  Load the user's details on activity create and update VatomMetaScreen
    * @param savedInstanceState
    */
   void onCreate(Bundle savedInstanceState);
