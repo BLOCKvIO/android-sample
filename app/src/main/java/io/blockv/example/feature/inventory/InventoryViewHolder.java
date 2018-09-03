@@ -9,7 +9,6 @@ import io.blockv.core.client.manager.VatomManager;
 import io.blockv.core.model.Resource;
 import io.blockv.core.model.Vatom;
 import io.blockv.example.R;
-import io.blockv.example.feature.details.VatomMetaActivity;
 import timber.log.Timber;
 
 public class InventoryViewHolder extends RecyclerView.ViewHolder {
@@ -19,16 +18,19 @@ public class InventoryViewHolder extends RecyclerView.ViewHolder {
   final Picasso picasso;
   final VatomManager vatomManager;
   final ResourceManager resourceManager;
+  final OnClickListener listener;
 
   public InventoryViewHolder(View itemView,
                              VatomManager vatomManager,
                              ResourceManager resourceManager,
-                             Picasso picasso) {
+                             Picasso picasso,
+                             OnClickListener listener) {
     super(itemView);
     imageView = itemView.findViewById(R.id.image);
     this.picasso = picasso;
     this.vatomManager = vatomManager;
     this.resourceManager = resourceManager;
+    this.listener = listener;
   }
 
   public Vatom getVatom() {
@@ -57,8 +59,12 @@ public class InventoryViewHolder extends RecyclerView.ViewHolder {
         .error(R.drawable.ic_error)
         .into(imageView);
 
-      imageView.setOnClickListener(view -> view.getContext().startActivity(VatomMetaActivity.getIntent(view.getContext(), vatom.getId())));
+      imageView.setOnClickListener(view -> listener.onClick(view, vatom.getId()));
     }
 
+  }
+
+  interface OnClickListener {
+    void onClick(View view, String vatomId);
   }
 }

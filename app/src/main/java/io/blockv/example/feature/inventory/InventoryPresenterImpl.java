@@ -2,6 +2,7 @@ package io.blockv.example.feature.inventory;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import io.blockv.core.model.Vatom;
 import io.blockv.example.R;
 import io.blockv.example.feature.BasePresenter;
@@ -44,6 +45,11 @@ public class InventoryPresenterImpl extends BasePresenter implements InventoryPr
   @Override
   public void onSwipeRefresh() {
     refresh();
+  }
+
+  @Override
+  public void onItemClicked(View view, String vatomId) {
+    screen.startActivatedActivity(vatomId);
   }
 
   private void refresh() {

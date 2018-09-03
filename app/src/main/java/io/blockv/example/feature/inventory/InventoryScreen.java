@@ -21,4 +21,6 @@ public interface InventoryScreen {
 
   void startProfileActivity();
 
+  void startActivatedActivity(String vatomId);
+
 }
