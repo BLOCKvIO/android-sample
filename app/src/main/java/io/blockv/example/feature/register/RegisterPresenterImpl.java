@@ -2,7 +2,7 @@ package io.blockv.example.feature.register;
 
 import android.view.MenuItem;
 import android.view.View;
-import io.blockv.core.client.builder.RegistrationBuilder;
+import io.blockv.common.builder.RegistrationBuilder;
 import io.blockv.example.R;
 import io.blockv.example.feature.BasePresenter;
 

@@ -5,9 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.squareup.picasso.Picasso;
+import io.blockv.common.model.Vatom;
 import io.blockv.core.client.manager.ResourceManager;
 import io.blockv.core.client.manager.VatomManager;
-import io.blockv.core.model.Vatom;
 import io.blockv.example.R;
 
 import java.util.ArrayList;

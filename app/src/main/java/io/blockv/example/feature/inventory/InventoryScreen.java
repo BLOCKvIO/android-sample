@@ -1,6 +1,6 @@
 package io.blockv.example.feature.inventory;
 
-import io.blockv.core.model.Vatom;
+import io.blockv.common.model.Vatom;
 
 import java.util.List;
 

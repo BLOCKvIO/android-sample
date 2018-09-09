@@ -4,10 +4,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
+import io.blockv.common.internal.net.rest.auth.ResourceEncoder;
+import io.blockv.common.model.Resource;
+import io.blockv.common.model.Vatom;
 import io.blockv.core.client.manager.ResourceManager;
 import io.blockv.core.client.manager.VatomManager;
-import io.blockv.core.model.Resource;
-import io.blockv.core.model.Vatom;
 import io.blockv.example.R;
 import timber.log.Timber;
 
@@ -50,7 +51,7 @@ public class InventoryViewHolder extends RecyclerView.ViewHolder {
       try {
         //add asset provider credentials
         resourceUrl = resourceManager.encodeUrl(resourceUrl);
-      } catch (ResourceManager.MissingAssetProviderException e) {
+      } catch (ResourceEncoder.MissingAssetProviderException e) {
         Timber.w(e.getMessage());
       }
       picasso

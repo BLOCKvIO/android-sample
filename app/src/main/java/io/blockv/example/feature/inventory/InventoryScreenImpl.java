@@ -3,7 +3,7 @@ package io.blockv.example.feature.inventory;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import io.blockv.core.model.Vatom;
+import io.blockv.common.model.Vatom;
 import io.blockv.example.R;
 import io.blockv.example.feature.BaseScreen;
 import io.blockv.example.feature.activated.ActivatedActivity;

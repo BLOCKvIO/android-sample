@@ -1,6 +1,7 @@
 package io.blockv.example.feature.details;
 
-import io.blockv.core.model.Vatom;
+
+import io.blockv.common.model.Vatom;
 
 /**
  * VatomMetaScreen handles screen layout for VatomMetaActivity

@@ -1,6 +1,7 @@
 package io.blockv.example.feature.activated;
 
-import io.blockv.core.model.Vatom;
+
+import io.blockv.common.model.Vatom;
 
 /**
  * ActivatedScreen handles screen layout for ActivatedActivity
