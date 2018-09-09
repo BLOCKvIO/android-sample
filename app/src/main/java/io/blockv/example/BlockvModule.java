@@ -5,6 +5,7 @@ import dagger.Module;
 import dagger.Provides;
 import io.blockv.core.client.Blockv;
 import io.blockv.core.client.manager.*;
+import io.blockv.face.client.FaceManager;
 
 import javax.inject.Singleton;
 
@@ -56,4 +57,9 @@ public class BlockvModule {
     return blockv.getActivityManager();
   }
 
+  @Singleton
+  @Provides
+  public FaceManager provideFaceManager(Blockv blockv) {
+    return blockv.getFaceManager();
+  }
 }
