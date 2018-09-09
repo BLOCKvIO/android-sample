@@ -131,12 +131,22 @@
   <!--Loading…-->
   <string name="profile_page_loading">Loading…</string>
 
-  <!-- Vatom page -->
+  <!-- Vatom Details page -->
+  <!--Loading…-->
+  <string name="vatom_details_page_loading">Loading…</string>
+  <!--vAtom Details-->
+  <string name="vatom_details_page_title">vAtom Details</string>
+  <!--No vAtom found with id-->
+  <string name="vatom_details_page_no_vatom">No vAtom found with id</string>
+
+  <!-- Vatom View page -->
   <!--Loading…-->
   <string name="vatom_page_loading">Loading…</string>
   <!--vAtom Details-->
-  <string name="vatom_page_title">vAtom Details</string>
+  <string name="vatom_page_title">vAtom View</string>
   <!--No vAtom found with id-->
   <string name="vatom_page_no_vatom">No vAtom found with id</string>
+  <!--No vAtom found with id-->
+  <string name="vatom_page_details">Details</string>
 
 </resources>

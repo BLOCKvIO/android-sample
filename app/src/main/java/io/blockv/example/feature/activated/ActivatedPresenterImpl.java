@@ -10,18 +10,19 @@ import io.blockv.example.feature.BasePresenter;
 
 public class ActivatedPresenterImpl extends BasePresenter implements ActivatedPresenter {
 
-  private final VatomMetaScreen screen;
+  private final ActivatedScreen screen;
 
-  public ActivatedPresenterImpl(VatomMetaScreen screen) {
+  private String vatomId = "";
+
+  public ActivatedPresenterImpl(ActivatedScreen screen) {
     this.screen = screen;
   }
 
   @Override
   public void onCreate(Intent intent) {
 
-    String vatomId =intent.getExtras().getString(Extras.VATOM_ID);
-    if(TextUtils.isEmpty(vatomId))
-    {
+    vatomId = intent.getExtras().getString(Extras.VATOM_ID);
+    if (TextUtils.isEmpty(vatomId)) {
       screen.showToast(getString(R.string.vatom_page_no_vatom));
       screen.finish();
     }
@@ -30,12 +31,12 @@ public class ActivatedPresenterImpl extends BasePresenter implements ActivatedPr
     //get vatom by id
     collect(vatomManager
       .getVatoms(vatomId)
-      .call(vatoms->{
+      .call(vatoms -> {
         screen.hideDialog();
         if (vatoms != null && vatoms.size() > 0) {
           screen.setVatom(vatoms.get(0));
         }
-      },throwable->{
+      }, throwable -> {
         screen.hideDialog();
         screen.showToast(throwable.getMessage());
         screen.finish();
@@ -52,6 +53,10 @@ public class ActivatedPresenterImpl extends BasePresenter implements ActivatedPr
   public void onOptionsItemSelected(MenuItem menuItem) {
     if (menuItem.getItemId() == android.R.id.home) {
       screen.finish();
+    } else if (menuItem.getItemId() == R.id.details) {
+      if (vatomId != null && vatomId.length() > 0) {
+        screen.startVatomDetailsActivity(vatomId);
+      }
     }
 
   }

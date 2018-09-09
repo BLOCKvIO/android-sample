@@ -3,6 +3,7 @@ package io.blockv.example.feature.activated;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import io.blockv.example.R;
 import io.blockv.example.constants.Extras;
@@ -27,7 +28,7 @@ public class ActivatedActivity extends BaseActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_vatom_activated);
-    VatomMetaScreen screen = new VatomMetaScreenImpl(this);
+    ActivatedScreen screen = new ActivatedScreenImpl(this);
     presenter = new ActivatedPresenterImpl(screen);
     screen.registerEvents(presenter);
     presenter.onCreate(getIntent());
@@ -42,5 +43,11 @@ public class ActivatedActivity extends BaseActivity {
   public boolean onOptionsItemSelected(MenuItem menuItem) {
     presenter.onOptionsItemSelected(menuItem);
     return super.onOptionsItemSelected(menuItem);
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_activated, menu);
+    return super.onCreateOptionsMenu(menu);
   }
 }

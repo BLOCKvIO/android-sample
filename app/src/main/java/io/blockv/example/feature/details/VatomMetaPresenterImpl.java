@@ -22,11 +22,11 @@ public class VatomMetaPresenterImpl extends BasePresenter implements VatomMetaPr
     String vatomId =intent.getExtras().getString(Extras.VATOM_ID);
     if(TextUtils.isEmpty(vatomId))
     {
-      screen.showToast(getString(R.string.vatom_page_no_vatom));
+      screen.showToast(getString(R.string.vatom_details_page_no_vatom));
       screen.finish();
     }
 
-    screen.showDialog(getString(R.string.vatom_page_loading));
+    screen.showDialog(getString(R.string.vatom_details_page_loading));
     //get vatom by id
     collect(vatomManager
       .getVatoms(vatomId)

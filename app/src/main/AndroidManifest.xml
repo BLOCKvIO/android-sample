@@ -67,7 +67,7 @@
       />
     <activity
       android:name="io.blockv.example.feature.details.VatomMetaActivity"
-      android:label="@string/vatom_page_title"
+      android:label="@string/vatom_details_page_title"
       android:screenOrientation="portrait"
       />
   </application>

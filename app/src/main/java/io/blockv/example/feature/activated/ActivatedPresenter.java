@@ -11,7 +11,7 @@ import android.view.MenuItem;
 public interface ActivatedPresenter {
 
   /**
-   *  Load vatom details on activity create and update VatomMetaScreen
+   *  Load vatom details on activity create and update ActivatedScreen
    * @param intent
    */
   void onCreate(Intent intent);
