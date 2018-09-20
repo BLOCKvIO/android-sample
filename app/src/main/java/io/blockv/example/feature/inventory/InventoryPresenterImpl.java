@@ -3,7 +3,7 @@ package io.blockv.example.feature.inventory;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import io.blockv.core.model.Vatom;
+import io.blockv.common.model.Vatom;
 import io.blockv.example.R;
 import io.blockv.example.feature.BasePresenter;
 import timber.log.Timber;

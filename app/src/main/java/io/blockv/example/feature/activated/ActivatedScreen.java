@@ -2,6 +2,7 @@ package io.blockv.example.feature.activated;
 
 
 import io.blockv.common.model.Vatom;
+import io.blockv.common.util.Cancellable;
 
 /**
  * ActivatedScreen handles screen layout for ActivatedActivity
@@ -20,7 +21,7 @@ public interface ActivatedScreen {
 
   void showToast(String message);
 
-  void setVatom(Vatom vatom);
+  Cancellable setVatom(Vatom vatom);
 
   void startVatomDetailsActivity(String vatomId);
 

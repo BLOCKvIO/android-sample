@@ -34,7 +34,7 @@ public class ActivatedPresenterImpl extends BasePresenter implements ActivatedPr
       .call(vatoms -> {
         screen.hideDialog();
         if (vatoms != null && vatoms.size() > 0) {
-          screen.setVatom(vatoms.get(0));
+          collect(screen.setVatom(vatoms.get(0)));
         }
       }, throwable -> {
         screen.hideDialog();

@@ -2,7 +2,7 @@ package io.blockv.example.feature.details;
 
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import io.blockv.core.model.Vatom;
+import io.blockv.common.model.Vatom;
 import io.blockv.example.R;
 import io.blockv.example.feature.BaseScreen;
 

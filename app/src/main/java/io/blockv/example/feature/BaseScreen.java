@@ -11,6 +11,7 @@ import io.blockv.core.client.manager.ResourceManager;
 import io.blockv.core.client.manager.VatomManager;
 import io.blockv.example.Injector;
 import io.blockv.example.R;
+import io.blockv.face.client.FaceManager;
 
 import javax.inject.Inject;
 
@@ -28,7 +29,10 @@ public class BaseScreen {
   @Inject
   protected ResourceManager resourceManager;
 
-  volatile Dialog progress;
+  @Inject
+  protected FaceManager faceManager;
+
+  private volatile Dialog progress;
 
 
   public BaseScreen(BaseActivity activity) {
