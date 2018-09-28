@@ -9,6 +9,7 @@ import io.blockv.common.model.Vatom;
 import io.blockv.core.client.manager.ResourceManager;
 import io.blockv.core.client.manager.VatomManager;
 import io.blockv.example.R;
+import io.blockv.face.client.FaceManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,29 +19,23 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
 
   List<Vatom> items = new ArrayList<Vatom>();
 
-  final Picasso picasso;
-
   final VatomManager vatomManager;
 
-  final ResourceManager resourceManager;
+  final FaceManager faceManager;
 
   private OnItemClickListener listener = null;
 
   public InventoryAdapter(VatomManager vatomManager,
-                          ResourceManager resourceManager,
-                          Picasso picasso) {
-    this.picasso = picasso;
+                          FaceManager faceManager) {
     this.vatomManager = vatomManager;
-    this.resourceManager = resourceManager;
+    this.faceManager = faceManager;
   }
 
   @Override
   public InventoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     return new InventoryViewHolder(
       LayoutInflater.from(parent.getContext()).inflate(R.layout.view_vatom_list_item, parent, false),
-      vatomManager,
-      resourceManager,
-      picasso,
+      faceManager,
       this);
   }
 
@@ -53,6 +48,13 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
   public int getItemCount() {
     return items.size();
   }
+
+  @Override
+  public int getItemViewType(int position) {
+    //recycle views based on vatom template variation
+    return items.get(position).getProperty().getTemplateVariationId().hashCode();
+  }
+
 
   public Vatom getItem(int pos) {
     return items.get(pos);
