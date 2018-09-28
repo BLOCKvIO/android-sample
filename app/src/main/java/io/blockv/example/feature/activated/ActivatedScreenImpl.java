@@ -2,6 +2,7 @@ package io.blockv.example.feature.activated;
 
 import android.view.LayoutInflater;
 import android.widget.TextView;
+import io.blockv.common.model.Face;
 import io.blockv.common.model.Vatom;
 import io.blockv.common.util.Cancellable;
 import io.blockv.common.util.CompositeCancellable;
@@ -11,6 +12,9 @@ import io.blockv.example.feature.details.VatomMetaActivity;
 import io.blockv.face.client.FaceManager;
 import io.blockv.face.client.VatomView;
 import timber.log.Timber;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActivatedScreenImpl extends BaseScreen implements ActivatedScreen {
 
@@ -44,37 +48,78 @@ public class ActivatedScreenImpl extends BaseScreen implements ActivatedScreen {
 
   @Override
   public Cancellable setVatom(Vatom vatom) {
+    LayoutInflater inflater = LayoutInflater.from(activity);
     name.setText(vatom.getProperty().getTitle());
     description.setText(vatom.getProperty().getDescription());
 
     CompositeCancellable cancellable = new CompositeCancellable();
-    cancellable.add(faceManager
-      .load(vatom)
-      .setErrorView(LayoutInflater.from(activity).inflate(R.layout.view_basic_error, icon, false))
-      .into(icon)
-      .call(faceView -> {
-        Timber.e(faceView.toString());
-      }, throwable -> {
-        Timber.e(throwable.getMessage());
-      }));
-    cancellable.add(faceManager
-      .load(vatom)
-      .setEmbeddedProcedure(FaceManager.EmbeddedProcedure.ENGAGED)
-      .into(engaged)
-      .call(faceView -> {
-        Timber.e(faceView.toString());
-      }, throwable -> {
-        Timber.e(throwable.getMessage());
-      }));
-    cancellable.add(faceManager
-      .load(vatom)
-      .setEmbeddedProcedure(FaceManager.EmbeddedProcedure.CARD)
-      .into(card)
-      .call(faceView -> {
-        Timber.e(faceView.toString());
-      }, throwable -> {
-        Timber.e(throwable.getMessage());
-      }));
+    //load vatomview using the default settings.
+    cancellable.add(
+      faceManager.load(vatom)
+        .setEmbeddedProcedure(FaceManager.EmbeddedProcedure.ICON)
+        .into(icon)
+        .call(faceView -> {
+          Timber.e(faceView.toString());
+        }, throwable -> {
+          Timber.e(throwable.getMessage());
+        }));
+
+    cancellable.add(
+      faceManager.load(vatom)
+        .setEmbeddedProcedure(FaceManager.EmbeddedProcedure.ENGAGED)
+        .setLoaderView(inflater.inflate(R.layout.view_custom_loader, engaged, false))
+        .setErrorView(inflater.inflate(R.layout.view_custom_error, engaged, false))
+        .into(engaged)
+        .call(faceView -> {
+          Timber.e(faceView.toString());
+        }, throwable -> {
+          Timber.e(throwable.getMessage());
+        }));
+
+    cancellable.add(
+      faceManager.load(vatom)
+        // .setEmbeddedProcedure(FaceManager.EmbeddedProcedure.CARD)
+        .setFaceSelectionProcedure((selectedVatom, displayUrls) -> {
+          ArrayList<Face> out = new ArrayList<>();
+          List<Face> faces = selectedVatom.getFaces();
+          Face selected = null;
+          int rating = -1;
+          for (Face face : faces) {
+
+            //we only want to display a face in view mode card
+            if (!face.getProperty().getViewMode().equalsIgnoreCase("card"))
+              continue;
+
+            //only want to select a native face
+            if (!face.isNative())
+              continue;
+
+            //check that the required faceview is registered
+            if (!displayUrls.contains(face.getProperty().getDisplayUrl().toLowerCase()))
+              continue;
+
+            int value;
+            //Selected a face with platform Android over generic
+            if (face.getProperty().getPlatform().equalsIgnoreCase("android")) {
+              value = 2;
+            } else if (face.getProperty().getPlatform().equalsIgnoreCase("generic")) {
+              value = 1;
+            } else
+              continue;//unsupported platform
+
+            if (value > rating) {
+              rating = value;
+              selected = face;
+            }
+          }
+          return selected;
+        })
+        .into(card)
+        .call(faceView -> {
+          Timber.e(faceView.toString());
+        }, throwable -> {
+          Timber.e(throwable.getMessage());
+        }));
     return cancellable;
   }
 

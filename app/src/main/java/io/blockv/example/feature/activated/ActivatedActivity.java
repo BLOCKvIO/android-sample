@@ -10,7 +10,7 @@ import io.blockv.example.constants.Extras;
 import io.blockv.example.feature.BaseActivity;
 
 /**
- * The ActivatedActivity demonstrates fetching a vatom by id
+ * The ActivatedActivity demonstrates fetching a vatom by id and loading a vatomview.
  *
  * @see ActivatedPresenterImpl
  */

@@ -29,18 +29,18 @@ public class ActivatedPresenterImpl extends BasePresenter implements ActivatedPr
 
     screen.showDialog(getString(R.string.vatom_page_loading));
     //get vatom by id
-    collect(vatomManager
-      .getVatoms(vatomId)
-      .call(vatoms -> {
-        screen.hideDialog();
-        if (vatoms != null && vatoms.size() > 0) {
-          collect(screen.setVatom(vatoms.get(0)));
-        }
-      }, throwable -> {
-        screen.hideDialog();
-        screen.showToast(throwable.getMessage());
-        screen.finish();
-      }));
+    collect(
+      vatomManager.getVatoms(vatomId)
+        .call(vatoms -> {
+          screen.hideDialog();
+          if (vatoms != null && vatoms.size() > 0) {
+            collect(screen.setVatom(vatoms.get(0)));
+          }
+        }, throwable -> {
+          screen.hideDialog();
+          screen.showToast(throwable.getMessage());
+          screen.finish();
+        }));
   }
 
   @Override
