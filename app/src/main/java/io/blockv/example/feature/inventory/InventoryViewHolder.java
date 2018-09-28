@@ -3,6 +3,7 @@ package io.blockv.example.feature.inventory;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import io.blockv.common.model.Vatom;
+import io.blockv.common.util.Cancellable;
 import io.blockv.example.R;
 import io.blockv.face.client.FaceManager;
 import io.blockv.face.client.VatomView;
@@ -27,18 +28,21 @@ public class InventoryViewHolder extends RecyclerView.ViewHolder {
     return vatom;
   }
 
-  public void setVatom(Vatom vatom) {
+  public Cancellable setVatom(Vatom vatom) {
     this.vatom = vatom;
-    faceManager
+    vatomView.setOnClickListener(view -> listener.onClick(view, vatom.getId()));
+
+    //load the vatomview
+    return faceManager
       .load(vatom)
-      .setLoaderDelay(300)
+      .setLoaderDelay(200)//use loader delay to prevent loaders flicking when scrolling fast
       .into(vatomView)
       .call(success -> {
 
       },throwable->{
 
       });
-    vatomView.setOnClickListener(view -> listener.onClick(view, vatom.getId()));
+
   }
 
   interface OnClickListener {

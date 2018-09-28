@@ -19,10 +19,9 @@ public class LoginEmailPresenterImpl extends BasePresenter implements LoginEmail
     screen.showDialog(getString(R.string.login_page_dialog_logging_in));
     ///attempt to login using the provided email address and password
     collect(
-      userManager
-        .login(token, UserManager.TokenType.EMAIL, password)
+      userManager.login(token, UserManager.TokenType.EMAIL, password)
         .call(user -> {
-          //on success you will receive a user model containing the user's details
+            //on success you will receive a user model containing the user's details
             screen.hideDialog();
             screen.startInventoryActivity();
           },
@@ -39,8 +38,7 @@ public class LoginEmailPresenterImpl extends BasePresenter implements LoginEmail
 
     //attempt to reset the users password, on success an OTP to be sent to the provided email address
     collect(
-      userManager
-        .resetToken(user, UserManager.TokenType.EMAIL)
+      userManager.resetToken(user, UserManager.TokenType.EMAIL)
         .call(Void -> {
           screen.hideDialog();
           screen.showToast(getString(R.string.login_page_otp_sent));

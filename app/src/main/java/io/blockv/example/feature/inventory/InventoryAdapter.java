@@ -51,7 +51,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
 
   @Override
   public int getItemViewType(int position) {
-    //recycle views based on vatom template variation
+    //recycle views based on vatom template variation id
     return items.get(position).getProperty().getTemplateVariationId().hashCode();
   }
 

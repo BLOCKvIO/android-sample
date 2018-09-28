@@ -54,10 +54,9 @@ public class InventoryPresenterImpl extends BasePresenter implements InventoryPr
 
   private void refresh() {
     dispose();
-    ///load the user's vAtoms from root inventory
+    //load the user's vAtoms from root inventory
     collect(
-      vatomManager
-        .getInventory(".", 1, 100)//inventory id "." is root
+      vatomManager.getInventory(".", 1, 100)//inventory id "." is root
         .call(vatoms -> {
             if (vatoms != null) {
               //filter out vAtoms

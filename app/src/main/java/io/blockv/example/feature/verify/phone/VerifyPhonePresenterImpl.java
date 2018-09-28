@@ -23,13 +23,12 @@ public class VerifyPhonePresenterImpl extends BasePresenter implements VerifyPho
   }
 
   @Override
-  public void onVerifyButtonClicked(View view,String phoneNumber,String code) {
+  public void onVerifyButtonClicked(View view, String phoneNumber, String code) {
 
     screen.showDialog(getString(R.string.verify_page_verifying));
     //attempt to verify the user's phone number
     collect(
-      userManager
-        .verifyUserToken(phoneNumber, UserManager.TokenType.PHONE_NUMBER, code)
+      userManager.verifyUserToken(phoneNumber, UserManager.TokenType.PHONE_NUMBER, code)
         .call(Void -> {
           screen.showToast(getString(R.string.verify_page_success));
           screen.startInventoryActivity();
@@ -41,10 +40,11 @@ public class VerifyPhonePresenterImpl extends BasePresenter implements VerifyPho
   }
 
   @Override
-  public void onResendOtpButtonClicked(View view,String phoneNumber) {
+  public void onResendOtpButtonClicked(View view, String phoneNumber) {
     screen.showDialog(getString(R.string.verify_page_sending));
     //request a new verification code
-    collect(userManager.resendVerification(phoneNumber, UserManager.TokenType.PHONE_NUMBER)
+    collect(
+      userManager.resendVerification(phoneNumber, UserManager.TokenType.PHONE_NUMBER)
       .call(Void -> {
           screen.hideDialog();
           screen.showToast(getString(R.string.verify_page_success));
