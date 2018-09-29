@@ -2,63 +2,50 @@ package io.blockv.example.feature.inventory;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-import com.squareup.picasso.Picasso;
-import io.blockv.core.client.manager.ResourceManager;
-import io.blockv.core.client.manager.VatomManager;
-import io.blockv.core.model.Resource;
-import io.blockv.core.model.Vatom;
+import io.blockv.common.model.Vatom;
+import io.blockv.common.util.Cancellable;
 import io.blockv.example.R;
-import io.blockv.example.feature.activated.VatomActivity;
-import timber.log.Timber;
+import io.blockv.face.client.FaceManager;
+import io.blockv.face.client.VatomView;
 
 public class InventoryViewHolder extends RecyclerView.ViewHolder {
 
   private Vatom vatom;
-  final ImageView imageView;
-  final Picasso picasso;
-  final VatomManager vatomManager;
-  final ResourceManager resourceManager;
+  final VatomView vatomView;
+  final FaceManager faceManager;
+  final OnClickListener listener;
 
   public InventoryViewHolder(View itemView,
-                             VatomManager vatomManager,
-                             ResourceManager resourceManager,
-                             Picasso picasso) {
+                             FaceManager faceManager,
+                             OnClickListener listener) {
     super(itemView);
-    imageView = itemView.findViewById(R.id.image);
-    this.picasso = picasso;
-    this.vatomManager = vatomManager;
-    this.resourceManager = resourceManager;
+    this.faceManager = faceManager;
+    this.vatomView = itemView.findViewById(R.id.vatom_view);
+    this.listener = listener;
   }
 
   public Vatom getVatom() {
     return vatom;
   }
 
-  public void setVatom(Vatom vatom) {
+  public Cancellable setVatom(Vatom vatom) {
     this.vatom = vatom;
-    //each vatom should contain an activated image resource
-    Resource resource = vatom
-      .getProperty()
-      .getResource("ActivatedImage");
+    vatomView.setOnClickListener(view -> listener.onClick(view, vatom.getId()));
 
-    if (resource != null) {
-      //load activated image
-      String resourceUrl = resource.getUrl();
-      try {
-        //add asset provider credentials
-        resourceUrl = resourceManager.encodeUrl(resourceUrl);
-      } catch (ResourceManager.MissingAssetProviderException e) {
-        Timber.w(e.getMessage());
-      }
-      picasso
-        .load(resourceUrl)
-        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-        .error(R.drawable.ic_error)
-        .into(imageView);
+    //load the vatomview
+    return faceManager
+      .load(vatom)
+      .setLoaderDelay(200)//use loader delay to prevent loaders flicking when scrolling fast
+      .into(vatomView)
+      .call(success -> {
 
-      imageView.setOnClickListener(view -> view.getContext().startActivity(VatomActivity.getIntent(view.getContext(), vatom.getId())));
-    }
+      },throwable->{
 
+      });
+
+  }
+
+  interface OnClickListener {
+    void onClick(View view, String vatomId);
   }
 }

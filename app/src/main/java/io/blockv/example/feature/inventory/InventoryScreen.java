@@ -1,9 +1,8 @@
 package io.blockv.example.feature.inventory;
 
-import io.blockv.core.model.Vatom;
+import io.blockv.common.model.Vatom;
 
 import java.util.List;
-
 
 /**
  * InventoryScreen handles screen layout and navigation for InventoryActivity
@@ -11,6 +10,7 @@ import java.util.List;
  * @see InventoryActivity
  */
 public interface InventoryScreen {
+
   void registerEvents(InventoryPresenter presenter);
 
   void setVatoms(List<Vatom> vatoms);
@@ -20,5 +20,7 @@ public interface InventoryScreen {
   void finish();
 
   void startProfileActivity();
+
+  void startActivatedActivity(String vatomId);
 
 }

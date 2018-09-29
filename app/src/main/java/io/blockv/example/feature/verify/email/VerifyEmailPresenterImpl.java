@@ -27,8 +27,7 @@ public class VerifyEmailPresenterImpl extends BasePresenter implements VerifyEma
     screen.showDialog(getString(R.string.verify_page_verifying));
     //attempt to verify the user's email address
     collect(
-      userManager
-        .verifyUserToken(email, UserManager.TokenType.EMAIL, code)
+      userManager.verifyUserToken(email, UserManager.TokenType.EMAIL, code)
         .call(Void -> {
           screen.showToast(getString(R.string.verify_page_success));
           screen.startInventoryActivity();
@@ -43,7 +42,8 @@ public class VerifyEmailPresenterImpl extends BasePresenter implements VerifyEma
   public void onResendOtpButtonClicked(View view, String email) {
     screen.showDialog(getString(R.string.verify_page_sending));
     //request a new verification code
-    collect(userManager.resendVerification(email, UserManager.TokenType.EMAIL)
+    collect(
+      userManager.resendVerification(email, UserManager.TokenType.EMAIL)
       .call(Void -> {
           screen.hideDialog();
           screen.showToast(getString(R.string.verify_page_success));

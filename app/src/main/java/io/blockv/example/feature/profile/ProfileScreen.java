@@ -1,11 +1,11 @@
 package io.blockv.example.feature.profile;
 
-import io.blockv.core.model.Token;
+import io.blockv.common.model.Token;
 
 import java.util.List;
 
 /**
- * VatomScreen handles screen layout for VatomActivity
+ * ProfileScreen handles screen layout for VatomActivity
  * @see ProfileActivity
  */
 

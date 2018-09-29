@@ -2,7 +2,7 @@ package io.blockv.example.feature.register;
 
 import android.view.MenuItem;
 import android.view.View;
-import io.blockv.core.client.builder.RegistrationBuilder;
+import io.blockv.common.builder.RegistrationBuilder;
 import io.blockv.example.R;
 import io.blockv.example.feature.BasePresenter;
 
@@ -25,23 +25,23 @@ public class RegisterPresenterImpl extends BasePresenter implements RegisterPres
     screen.showDialog(getString(R.string.register_page_dialog_registering));
 
 // register a new user, a valid email or phone number is required
-    collect(userManager
-      .register(new RegistrationBuilder()
+    collect(
+      userManager.register(new RegistrationBuilder()
         .setFirstName(firstName)
         .setLastName(lastName)
         .setPassword(password)
         .addEmail(email)
         .addPhoneNumber(phoneNumber.replaceAll("[()\\-\\s]", ""))
         .build())
-      .call(user -> {
-        //on success you will receive a user model containing the user's details
-        screen.showToast(getString(R.string.register_page_success));
-        screen.startVerifyActivity(phoneNumber.replaceAll("[()\\-\\s]", ""), email);
-        screen.hideDialog();
-      }, throwable -> {
-        screen.showToast(throwable.getMessage());
-        screen.hideDialog();
-      }));
+        .call(user -> {
+          //on success you will receive a user model containing the user's details
+          screen.showToast(getString(R.string.register_page_success));
+          screen.startVerifyActivity(phoneNumber.replaceAll("[()\\-\\s]", ""), email);
+          screen.hideDialog();
+        }, throwable -> {
+          screen.showToast(throwable.getMessage());
+          screen.hideDialog();
+        }));
   }
 
   @Override

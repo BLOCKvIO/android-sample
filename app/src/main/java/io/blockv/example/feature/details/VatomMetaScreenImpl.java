@@ -1,8 +1,8 @@
-package io.blockv.example.feature.activated;
+package io.blockv.example.feature.details;
 
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import io.blockv.core.model.Vatom;
+import io.blockv.common.model.Vatom;
 import io.blockv.example.R;
 import io.blockv.example.feature.BaseScreen;
 
@@ -11,14 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VatomScreenImpl extends BaseScreen implements VatomScreen {
+public class VatomMetaScreenImpl extends BaseScreen implements VatomMetaScreen {
 
 
   final android.support.v7.widget.Toolbar toolbar;
   final ListView details;
 
 
-  public VatomScreenImpl(VatomActivity activity) {
+  public VatomMetaScreenImpl(VatomMetaActivity activity) {
     super(activity);
 
     toolbar = activity.findViewById(R.id.toolbar);
@@ -31,7 +31,7 @@ public class VatomScreenImpl extends BaseScreen implements VatomScreen {
   }
 
   @Override
-  public void registerEvents(VatomPresenter presenter) {
+  public void registerEvents(VatomMetaPresenter presenter) {
 
   }
 
