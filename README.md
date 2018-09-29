@@ -43,11 +43,11 @@ This example demos the following features of the BLOCKv Android Sdk
 
 * **Adding VatomView to a layout**. [Code](./app/src/main/res/layout/activity_vatom_activated.xml#L53)
 
-* **Loading a VatomView**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L52)
+* **Loading a VatomView**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L58)
 
-* **Customising a VatomView loader**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L66)
+* **Customising a VatomView loader**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L70)
 
-* **Customising a VatomView error**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L67)
+* **Customising a VatomView error**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L71)
 
 * **Customising the face selection procedure**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L82)
 
@@ -67,7 +67,7 @@ This example demos the following features of the BLOCKv Android Sdk
 
 To set up the example:
 
-1. Change [*replace-with-your-app-id*](./app/src/main/java/io/blockv/example/BlockvModule.java#L28) in the BlockvModule.java file to your own **App ID**. See [FAQ](https://developer.blockv.io/docs/faq)
+1. Change [*replace-with-your-app-id*](./app/src/main/java/io/blockv/example/BlockvModule.java#L29) in the BlockvModule.java file to your own **App ID**. See [FAQ](https://developer.blockv.io/docs/faq)
 1. Compile and run.
 
 <h3>Building</h3>
