@@ -5,6 +5,9 @@ import dagger.Module;
 import dagger.Provides;
 import io.blockv.core.client.Blockv;
 import io.blockv.core.client.manager.*;
+import io.blockv.example.utils.ImageFaceView;
+import io.blockv.face.client.FaceManager;
+import io.blockv.faces.NativeImageFace;
 
 import javax.inject.Singleton;
 
@@ -23,7 +26,9 @@ public class BlockvModule {
   @Singleton
   @Provides
   public Blockv provideBlockv() {
-    return new Blockv(context, "<replace-with-app-id>");//creates the blockv singleton
+    Blockv blockv = new Blockv(context, "<replace-with-app-id>");//creates the blockv singleton
+    blockv.getFaceManager().registerFace(ImageFaceView.factory);//register custom faceview
+    return blockv;
   }
 
   @Singleton
@@ -56,4 +61,9 @@ public class BlockvModule {
     return blockv.getActivityManager();
   }
 
+  @Singleton
+  @Provides
+  public FaceManager provideFaceManager(Blockv blockv) {
+    return blockv.getFaceManager();
+  }
 }

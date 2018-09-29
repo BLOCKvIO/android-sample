@@ -1,19 +1,17 @@
 package io.blockv.example.feature.activated;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 /**
- * VatomPresenter handles business logic for VatomActivity
- * @see VatomActivity
+ * ActivatedPresenter handles business logic for ActivatedActivity
+ * @see ActivatedActivity
  */
 
-public interface VatomPresenter {
+public interface ActivatedPresenter {
 
   /**
-   *  Load vatom details on activity create and update VatomScreen
+   *  Load vatom details on activity create and update ActivatedScreen
    * @param intent
    */
   void onCreate(Intent intent);

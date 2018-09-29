@@ -6,8 +6,8 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.*;
 import com.jakewharton.processphoenix.ProcessPhoenix;
-import io.blockv.core.client.manager.ResourceManager;
-import io.blockv.core.model.Token;
+import io.blockv.common.internal.net.rest.auth.ResourceEncoder;
+import io.blockv.common.model.Token;
 import io.blockv.example.R;
 import io.blockv.example.feature.BaseScreen;
 import io.blockv.example.feature.landing.LandingActivity;
@@ -96,7 +96,7 @@ public class ProfileScreenImpl extends BaseScreen implements ProfileScreen {
       try {
         //add asset provider credentials
         url = resourceManager.encodeUrl(url);
-      } catch (ResourceManager.MissingAssetProviderException e) {
+      } catch (ResourceEncoder.MissingAssetProviderException e) {
         Timber.w(e.getMessage());
       }
       picasso

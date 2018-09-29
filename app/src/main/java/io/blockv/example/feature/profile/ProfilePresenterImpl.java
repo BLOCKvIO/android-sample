@@ -11,8 +11,8 @@ import android.os.Bundle;
 import android.support.media.ExifInterface;
 import android.view.MenuItem;
 import android.view.View;
-import io.blockv.core.client.builder.UpdateUserBuilder;
-import io.blockv.core.util.Callable;
+import io.blockv.common.builder.UpdateUserBuilder;
+import io.blockv.common.util.Callable;
 import io.blockv.example.R;
 import io.blockv.example.feature.BasePresenter;
 import timber.log.Timber;
@@ -42,32 +42,32 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
 
     screen.showDialog(getString(R.string.profile_page_loading));
     //fetch the current logged in user's details
-    collect(userManager
-      .getCurrentUser()
-      .call(
-        user -> {
-          if (user != null) {
-            screen.setUserId(user.getId());
-            screen.setFirstName(user.getFirstName());
-            screen.setLastName(user.getLastName());
-            screen.setBirthday(user.getBirthday());
-            screen.setAvatar(user.getAvatarUri());
-            //fetch the current user's tokens
-            collect(
-              userManager.getCurrentUserTokens()
-                .call(tokens -> {
-                  screen.setTokens(tokens);
-                  screen.hideDialog();
-                }, throwable -> {
-                  screen.hideDialog();
-                  screen.showToast(throwable.getMessage());
-                }));
-          }
-        },
-        throwable -> {
-          screen.hideDialog();
-          screen.showToast(throwable.getMessage());
-        }));
+    collect(
+      userManager.getCurrentUser()
+        .call(
+          user -> {
+            if (user != null) {
+              screen.setUserId(user.getId());
+              screen.setFirstName(user.getFirstName());
+              screen.setLastName(user.getLastName());
+              screen.setBirthday(user.getBirthday());
+              screen.setAvatar(user.getAvatarUri());
+              //fetch the current user's tokens
+              collect(
+                userManager.getCurrentUserTokens()
+                  .call(tokens -> {
+                    screen.setTokens(tokens);
+                    screen.hideDialog();
+                  }, throwable -> {
+                    screen.hideDialog();
+                    screen.showToast(throwable.getMessage());
+                  }));
+            }
+          },
+          throwable -> {
+            screen.hideDialog();
+            screen.showToast(throwable.getMessage());
+          }));
 
   }
 
@@ -89,35 +89,37 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
   public void onSaveDetailsClick(View view, String firstName, String lastName, String birthday) {
     screen.showDialog(getString(R.string.profile_page_saving));
     //update the current user's details
-    collect(userManager.updateCurrentUser(
-      new UpdateUserBuilder()
-        .setFirstName(firstName)
-        .setLastName(lastName)
-        .setBirthday(birthday)
-        .build()
-    ).call(user -> {
-      screen.hideDialog();
-      screen.setUserId(user.getId());
-      screen.setFirstName(user.getFirstName());
-      screen.setLastName(user.getLastName());
-      screen.setBirthday(user.getBirthday());
-    }, throwable -> {
-      screen.showToast(throwable.getMessage());
-      screen.hideDialog();
-    }));
+    collect(
+      userManager.updateCurrentUser(
+        new UpdateUserBuilder()
+          .setFirstName(firstName)
+          .setLastName(lastName)
+          .setBirthday(birthday)
+          .build()
+      ).call(user -> {
+        screen.hideDialog();
+        screen.setUserId(user.getId());
+        screen.setFirstName(user.getFirstName());
+        screen.setLastName(user.getLastName());
+        screen.setBirthday(user.getBirthday());
+      }, throwable -> {
+        screen.showToast(throwable.getMessage());
+        screen.hideDialog();
+      }));
   }
 
   @Override
   public void onSavePasswordClick(View view, String password) {
     screen.showDialog(getString(R.string.profile_page_saving));
     //update current user's password
-    collect(userManager.updateCurrentUser(new UpdateUserBuilder()
-      .setPassword(password)
-      .build()
-    ).call(user -> screen.hideDialog(), throwable -> {
-      screen.showToast(throwable.getMessage());
-      screen.hideDialog();
-    }));
+    collect(
+      userManager.updateCurrentUser(new UpdateUserBuilder()
+        .setPassword(password)
+        .build()
+      ).call(user -> screen.hideDialog(), throwable -> {
+        screen.showToast(throwable.getMessage());
+        screen.hideDialog();
+      }));
   }
 
   @Override
@@ -155,17 +157,18 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
             loadAvatar(selectedImage)
               .call(avatar -> {
                 //update the current user's avatar
-                collect(userManager.uploadAvatar(avatar)
-                  .call(
-                    Void -> {
-                      screen.hideDialog();
-                      reload();
+                collect(
+                  userManager.uploadAvatar(avatar)
+                    .call(
+                      Void -> {
+                        screen.hideDialog();
+                        reload();
 
-                    },
-                    throwable -> {
-                      screen.hideDialog();
-                      screen.showToast(throwable.getMessage());
-                    }));
+                      },
+                      throwable -> {
+                        screen.hideDialog();
+                        screen.showToast(throwable.getMessage());
+                      }));
               }, throwable -> {
                 screen.hideDialog();
                 screen.showToast(throwable.getMessage());

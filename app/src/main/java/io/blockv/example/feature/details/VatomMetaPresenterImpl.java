@@ -1,4 +1,4 @@
-package io.blockv.example.feature.activated;
+package io.blockv.example.feature.details;
 
 import android.content.Intent;
 import android.text.TextUtils;
@@ -8,11 +8,11 @@ import io.blockv.example.constants.Extras;
 import io.blockv.example.feature.BasePresenter;
 
 
-public class VatomPresenterImpl extends BasePresenter implements VatomPresenter {
+public class VatomMetaPresenterImpl extends BasePresenter implements VatomMetaPresenter {
 
-  private final VatomScreen screen;
+  private final VatomMetaScreen screen;
 
-  public VatomPresenterImpl(VatomScreen screen) {
+  public VatomMetaPresenterImpl(VatomMetaScreen screen) {
     this.screen = screen;
   }
 
@@ -22,18 +22,18 @@ public class VatomPresenterImpl extends BasePresenter implements VatomPresenter 
     String vatomId =intent.getExtras().getString(Extras.VATOM_ID);
     if(TextUtils.isEmpty(vatomId))
     {
-      screen.showToast(getString(R.string.vatom_page_no_vatom));
+      screen.showToast(getString(R.string.vatom_details_page_no_vatom));
       screen.finish();
     }
 
-    screen.showDialog(getString(R.string.vatom_page_loading));
+    screen.showDialog(getString(R.string.vatom_details_page_loading));
     //get vatom by id
     collect(vatomManager
       .getVatoms(vatomId)
-      .call(group->{
+      .call(vatoms->{
         screen.hideDialog();
-        if (group != null && group.getVatoms().size() > 0) {
-          screen.setVatom(group.getVatoms().get(0));
+        if (vatoms != null && vatoms.size() > 0) {
+          screen.setVatom(vatoms.get(0));
         }
       },throwable->{
         screen.hideDialog();

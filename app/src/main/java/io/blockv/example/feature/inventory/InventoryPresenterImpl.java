@@ -2,7 +2,8 @@ package io.blockv.example.feature.inventory;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import io.blockv.core.model.Vatom;
+import android.view.View;
+import io.blockv.common.model.Vatom;
 import io.blockv.example.R;
 import io.blockv.example.feature.BasePresenter;
 import timber.log.Timber;
@@ -46,17 +47,21 @@ public class InventoryPresenterImpl extends BasePresenter implements InventoryPr
     refresh();
   }
 
+  @Override
+  public void onItemClicked(View view, String vatomId) {
+    screen.startActivatedActivity(vatomId);
+  }
+
   private void refresh() {
     dispose();
-    ///load the user's vAtoms from root inventory
+    //load the user's vAtoms from root inventory
     collect(
-      vatomManager
-        .getInventory(".", 1, 100)//inventory id "." is root
-        .call(group -> {
-            if (group != null) {
+      vatomManager.getInventory(".", 1, 100)//inventory id "." is root
+        .call(vatoms -> {
+            if (vatoms != null) {
               //filter out vAtoms
               List<Vatom> out = new ArrayList<>();
-              for (Vatom vatom : group.getVatoms()) {
+              for (Vatom vatom : vatoms) {
                 if (!vatom.getProperty().isDropped()//Filter out dropped vAtoms
                   && !vatom.getProperty().getTemplateId().endsWith("::vAtom::Avatar")//filter out avatar vAtoms
                   && !vatom.getProperty().getTemplateId().endsWith("::vAtom::CoinWallet")//filter out wallet vAtoms
