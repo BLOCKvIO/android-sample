@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import io.blockv.example.R;
 import io.blockv.example.constants.Extras;
 import io.blockv.example.feature.BasePresenter;
+import io.blockv.example.support.LiveVatomView;
 
 
 public class ActivatedPresenterImpl extends BasePresenter implements ActivatedPresenter {
