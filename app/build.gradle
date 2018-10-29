@@ -13,6 +13,9 @@ android {
     versionName "1.0.2"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
+  dexOptions {
+    preDexLibraries = false
+  }
   buildTypes {
     release {
       minifyEnabled false
@@ -58,21 +61,11 @@ dependencies {
 
   implementation 'de.hdodenhof:circleimageview:2.2.0'
 
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
   // BLOCKv sdk
-  implementation 'io.blockv.sdk:core:2.0.0'
-  implementation 'io.blockv.sdk:face:1.0.0'
-
-  // Web Socket
-  // (Optional) This is only required if you want to use the web socket.
-  // Attempting to access the EventManager will throw MissingWebSocketException
-  // if this is not included.
-  implementation 'com.neovisionaries:nv-websocket-client:2.5'
+  implementation ('io.blockv.sdk:face:2.1.2')
 
   // RxJava2
-  //implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-  //implementation 'io.reactivex.rxjava2:rxjava:2.1.6'
-  //implementation 'io.blockv.sdk:rxcore:2.0.0'
+  //implementation 'io.blockv.sdk:rxface:2.1.2'
+
 
 }
