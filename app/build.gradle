@@ -7,7 +7,7 @@ android {
   buildToolsVersion "27.0.3"
   defaultConfig {
     applicationId "io.blockv.example"
-    minSdkVersion 19
+    minSdkVersion 24
     targetSdkVersion 27
     versionCode 3
     versionName "1.0.2"
@@ -67,5 +67,7 @@ dependencies {
   // RxJava2
   //implementation 'io.blockv.sdk:rxface:2.1.2'
 
+  // External faces
+  implementation 'io.blockv.faces:face3d:1.0.4'
 
 }

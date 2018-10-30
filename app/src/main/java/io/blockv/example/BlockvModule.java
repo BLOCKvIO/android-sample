@@ -7,7 +7,7 @@ import io.blockv.core.client.Blockv;
 import io.blockv.core.client.manager.*;
 import io.blockv.example.utils.ImageFaceView;
 import io.blockv.face.client.FaceManager;
-import io.blockv.faces.NativeImageFace;
+import io.blockv.face3d.Face3D;
 
 import javax.inject.Singleton;
 
@@ -28,6 +28,7 @@ public class BlockvModule {
   public Blockv provideBlockv() {
     Blockv blockv = new Blockv(context, "<replace-with-app-id>");//creates the blockv singleton
     blockv.getFaceManager().registerFace(ImageFaceView.factory);//register custom faceview
+    blockv.getFaceManager().registerFace(Face3D.Companion.getFactory());
     return blockv;
   }
 
