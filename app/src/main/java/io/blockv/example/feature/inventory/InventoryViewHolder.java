@@ -2,6 +2,13 @@ package io.blockv.example.feature.inventory;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Set;
+
+import io.blockv.common.model.Face;
 import io.blockv.common.model.Vatom;
 import io.blockv.common.util.Cancellable;
 import io.blockv.example.R;
@@ -28,6 +35,20 @@ public class InventoryViewHolder extends RecyclerView.ViewHolder {
     return vatom;
   }
 
+  /** This FSP excludes "heavy" faces from the inventory view. */
+  FaceManager.FaceSelectionProcedure noHeavyFaces = (vatom, set) -> {
+
+    // Pick icon face
+    Face face = FaceManager.EmbeddedProcedure.ICON.getProcedure().select(vatom, set);
+
+    // Exclude heavy faces
+    if (face != null && face.getProperty().getDisplayUrl().equalsIgnoreCase("native://generic-3d")) return null;
+
+    // Not heavy, it's good
+    return face;
+
+  };
+
   public Cancellable setVatom(Vatom vatom) {
     this.vatom = vatom;
     vatomView.setOnClickListener(view -> listener.onClick(view, vatom.getId()));
@@ -35,6 +56,7 @@ public class InventoryViewHolder extends RecyclerView.ViewHolder {
     //load the vatomview
     return faceManager
       .load(vatom)
+      .setFaceSelectionProcedure(noHeavyFaces)
       .setLoaderDelay(200)//use loader delay to prevent loaders flicking when scrolling fast
       .into(vatomView)
       .call(success -> {
