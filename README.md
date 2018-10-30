@@ -43,13 +43,13 @@ This example demos the following features of the BLOCKv Android Sdk
 
 * **Adding VatomView to a layout**. [Code](./app/src/main/res/layout/activity_vatom_activated.xml#L53)
 
-* **Loading a VatomView**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L58)
+* **Loading a VatomView**. [Code](./app/src/main/java/io/blockv/example/support/LiveVatomView.java#L84)
 
-* **Customising a VatomView loader**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L70)
+* **Customising a VatomView loader**. [Code](./app/src/main/java/io/blockv/example/support/LiveVatomView.java#L87)
 
-* **Customising a VatomView error**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L71)
+* **Customising a VatomView error**. [Code](./app/src/main/java/io/blockv/example/support/LiveVatomView.java#L88)
 
-* **Customising the face selection procedure**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L82)
+* **Customising the face selection procedure**. [Code](./app/src/main/java/io/blockv/example/feature/activated/ActivatedScreenImpl.java#L68)
 
 * **Using a VatomView in a RecyclerView**.  [Code Part 1](./app/src/main/java/io/blockv/example/feature/inventory/InventoryAdapter.java#L55) [Code Part 2](./app/src/main/java/io/blockv/example/feature/inventory/InventoryViewHolder.java#L36)
 

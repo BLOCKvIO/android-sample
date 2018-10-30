@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.squareup.picasso.Picasso;
+import io.blockv.core.client.manager.EventManager;
 import io.blockv.core.client.manager.ResourceManager;
 import io.blockv.core.client.manager.VatomManager;
 import io.blockv.example.Injector;
@@ -16,6 +17,7 @@ import io.blockv.face.client.FaceManager;
 import javax.inject.Inject;
 
 public class BaseScreen {
+
   protected BaseActivity activity;
 
   protected Fragment fragment;
@@ -32,8 +34,10 @@ public class BaseScreen {
   @Inject
   protected FaceManager faceManager;
 
-  private volatile Dialog progress;
+  @Inject
+  protected EventManager eventManager;
 
+  private volatile Dialog progress;
 
   public BaseScreen(BaseActivity activity) {
     this.activity = activity;

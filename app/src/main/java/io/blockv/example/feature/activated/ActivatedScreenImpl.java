@@ -9,6 +9,7 @@ import io.blockv.common.util.CompositeCancellable;
 import io.blockv.example.R;
 import io.blockv.example.feature.BaseScreen;
 import io.blockv.example.feature.details.VatomMetaActivity;
+import io.blockv.example.support.LiveVatomView;
 import io.blockv.face.client.FaceManager;
 import io.blockv.face.client.VatomView;
 import timber.log.Timber;
@@ -24,6 +25,9 @@ public class ActivatedScreenImpl extends BaseScreen implements ActivatedScreen {
   final VatomView icon;
   final VatomView engaged;
   final VatomView card;
+  final LiveVatomView liveIcon;
+  final LiveVatomView liveEngaged;
+  final LiveVatomView liveCard;
 
   public ActivatedScreenImpl(ActivatedActivity activity) {
     super(activity);
@@ -38,7 +42,63 @@ public class ActivatedScreenImpl extends BaseScreen implements ActivatedScreen {
     if (activity.getSupportActionBar() != null) {
       activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+    LayoutInflater inflater = LayoutInflater.from(activity);
 
+    liveIcon = new LiveVatomView(
+      icon,
+      vatomManager,
+      faceManager,
+      eventManager)
+      .setSelectionProcedure(FaceManager.EmbeddedProcedure.ICON.getProcedure());
+
+    liveEngaged = new LiveVatomView(
+      engaged,
+      vatomManager,
+      faceManager,
+      eventManager)
+      .setSelectionProcedure(FaceManager.EmbeddedProcedure.ENGAGED.getProcedure())
+      .setLoaderView(inflater.inflate(R.layout.view_custom_loader, engaged, false))
+      .setErrorView(inflater.inflate(R.layout.view_custom_error, engaged, false));
+
+    liveCard = new LiveVatomView(
+      card,
+      vatomManager,
+      faceManager,
+      eventManager)
+      .setSelectionProcedure((selectedVatom, displayUrls) -> {
+        List<Face> faces = selectedVatom.getFaces();
+        Face selected = null;
+        int rating = -1;
+        for (Face face : faces) {
+
+          //we only want to display a face in view mode card
+          if (!face.getProperty().getViewMode().equalsIgnoreCase("card"))
+            continue;
+
+          //only want to select a native face
+          if (!face.isNative())
+            continue;
+
+          //check that the required faceview is registered
+          if (!displayUrls.contains(face.getProperty().getDisplayUrl().toLowerCase()))
+            continue;
+
+          int value;
+          //Selected a face with platform Android over generic
+          if (face.getProperty().getPlatform().equalsIgnoreCase("android")) {
+            value = 2;
+          } else if (face.getProperty().getPlatform().equalsIgnoreCase("generic")) {
+            value = 1;
+          } else
+            continue;//unsupported platform
+
+          if (value > rating) {
+            rating = value;
+            selected = face;
+          }
+        }
+        return selected;
+      });
   }
 
   @Override
@@ -48,78 +108,28 @@ public class ActivatedScreenImpl extends BaseScreen implements ActivatedScreen {
 
   @Override
   public Cancellable setVatom(Vatom vatom) {
-    LayoutInflater inflater = LayoutInflater.from(activity);
+
     name.setText(vatom.getProperty().getTitle());
     description.setText(vatom.getProperty().getDescription());
 
     CompositeCancellable cancellable = new CompositeCancellable();
-    //load vatomview using the default settings.
     cancellable.add(
-      faceManager.load(vatom)
-        .setEmbeddedProcedure(FaceManager.EmbeddedProcedure.ICON)
-        .into(icon)
-        .call(faceView -> {
-          Timber.e(faceView.toString());
-        }, throwable -> {
-          Timber.e(throwable.getMessage());
-        }));
+      liveIcon
+        .load(vatom)
+        .call(update -> {
+        }, throwable -> Timber.e(throwable.getMessage())));
 
-    cancellable.add(
-      faceManager.load(vatom)
-        .setEmbeddedProcedure(FaceManager.EmbeddedProcedure.ENGAGED)
-        .setLoaderView(inflater.inflate(R.layout.view_custom_loader, engaged, false))
-        .setErrorView(inflater.inflate(R.layout.view_custom_error, engaged, false))
-        .into(engaged)
-        .call(faceView -> {
-          Timber.e(faceView.toString());
-        }, throwable -> {
-          Timber.e(throwable.getMessage());
-        }));
+   cancellable.add(
+      liveEngaged.load(vatom)
+      .call(update -> {
+        Timber.e(update.toString());
+      }, throwable -> Timber.e(throwable.getMessage())));
 
     cancellable.add(
-      faceManager.load(vatom)
-        // .setEmbeddedProcedure(FaceManager.EmbeddedProcedure.CARD)
-        .setFaceSelectionProcedure((selectedVatom, displayUrls) -> {
-          ArrayList<Face> out = new ArrayList<>();
-          List<Face> faces = selectedVatom.getFaces();
-          Face selected = null;
-          int rating = -1;
-          for (Face face : faces) {
+      liveCard.load(vatom)
+        .call(update -> {
+        }, throwable -> Timber.e(throwable.getMessage())));
 
-            //we only want to display a face in view mode card
-            if (!face.getProperty().getViewMode().equalsIgnoreCase("card"))
-              continue;
-
-            //only want to select a native face
-            if (!face.isNative())
-              continue;
-
-            //check that the required faceview is registered
-            if (!displayUrls.contains(face.getProperty().getDisplayUrl().toLowerCase()))
-              continue;
-
-            int value;
-            //Selected a face with platform Android over generic
-            if (face.getProperty().getPlatform().equalsIgnoreCase("android")) {
-              value = 2;
-            } else if (face.getProperty().getPlatform().equalsIgnoreCase("generic")) {
-              value = 1;
-            } else
-              continue;//unsupported platform
-
-            if (value > rating) {
-              rating = value;
-              selected = face;
-            }
-          }
-          return selected;
-        })
-        .into(card)
-        .call(faceView -> {
-          Timber.e(faceView.toString());
-        }, throwable -> {
-          Timber.e(throwable.getMessage());
-        }));
     return cancellable;
   }
 
