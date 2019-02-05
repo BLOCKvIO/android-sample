@@ -2,18 +2,12 @@ package io.blockv.example.feature.inventory;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Set;
-
 import io.blockv.common.model.Face;
 import io.blockv.common.model.Vatom;
-import io.blockv.common.util.Cancellable;
 import io.blockv.example.R;
 import io.blockv.face.client.FaceManager;
 import io.blockv.face.client.VatomView;
+import io.reactivex.Completable;
 
 public class InventoryViewHolder extends RecyclerView.ViewHolder {
 
@@ -49,21 +43,18 @@ public class InventoryViewHolder extends RecyclerView.ViewHolder {
 
   };
 
-  public Cancellable setVatom(Vatom vatom) {
+  public Completable setVatom(Vatom vatom) {
     this.vatom = vatom;
     vatomView.setOnClickListener(view -> listener.onClick(view, vatom.getId()));
 
     //load the vatomview
-    return faceManager
-      .load(vatom)
-      .setFaceSelectionProcedure(noHeavyFaces)
-      .setLoaderDelay(200)//use loader delay to prevent loaders flicking when scrolling fast
-      .into(vatomView)
-      .call(success -> {
-
-      },throwable->{
-
-      });
+    return
+      Completable.fromSingle(
+        faceManager
+          .load(vatom)
+          .setFaceSelectionProcedure(noHeavyFaces)
+          .setLoaderDelay(200)//use loader delay to prevent loaders flicking when scrolling fast
+          .into(vatomView));
 
   }
 

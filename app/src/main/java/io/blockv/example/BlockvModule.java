@@ -2,7 +2,6 @@ package io.blockv.example;
 
 import android.content.Context;
 import android.os.Build;
-
 import dagger.Module;
 import dagger.Provides;
 import io.blockv.core.client.Blockv;

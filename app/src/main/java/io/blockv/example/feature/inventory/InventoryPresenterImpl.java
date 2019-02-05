@@ -6,6 +6,8 @@ import android.view.View;
 import io.blockv.common.model.Vatom;
 import io.blockv.example.R;
 import io.blockv.example.feature.BasePresenter;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import java.util.ArrayList;
@@ -57,22 +59,24 @@ public class InventoryPresenterImpl extends BasePresenter implements InventoryPr
     //load the user's vAtoms from root inventory
     collect(
       vatomManager.getInventory(".", 1, 100)//inventory id "." is root
-        .call(vatoms -> {
-            if (vatoms != null) {
-              //filter out vAtoms
-              List<Vatom> out = new ArrayList<>();
-              for (Vatom vatom : vatoms) {
-                if (!vatom.getProperty().isDropped()//Filter out dropped vAtoms
-                  && !vatom.getProperty().getTemplateId().endsWith("::vAtom::Avatar")//filter out avatar vAtoms
-                  && !vatom.getProperty().getTemplateId().endsWith("::vAtom::CoinWallet")//filter out wallet vAtoms
-                  ) {
-                  out.add(vatom);
-                }
-              }
-              screen.setVatoms(out);
+        .observeOn(AndroidSchedulers.mainThread())
+        .doFinally(() -> screen.showRefreshing(false))
+        .observeOn(Schedulers.computation())
+        .map(vatoms -> {
+          //filter out vAtoms
+          List<Vatom> out = new ArrayList<>();
+          for (Vatom vatom : vatoms) {
+            if (!vatom.getProperty().isDropped()//Filter out dropped vAtoms
+              && !vatom.getProperty().getTemplateId().endsWith("::vAtom::Avatar")//filter out avatar vAtoms
+              && !vatom.getProperty().getTemplateId().endsWith("::vAtom::CoinWallet")//filter out wallet vAtoms
+              ) {
+              out.add(vatom);
             }
-            screen.showRefreshing(false);
-          },
+          }
+          return out;
+        })
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(screen::setVatoms,
           throwable -> Timber.e(throwable.getMessage())
         ));
   }

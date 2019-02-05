@@ -102,10 +102,6 @@ public class VatomMetaScreenImpl extends BaseScreen implements VatomMetaScreen {
     map.put("title", "In Contract");
     map.put("content", ""+vatom.getProperty().isInContract());
     detail.add(map);
-    map = new HashMap<>();
-    map.put("title", "In reaction");
-    map.put("content", ""+vatom.getProperty().isInReaction());
-    detail.add(map);
 
 
 

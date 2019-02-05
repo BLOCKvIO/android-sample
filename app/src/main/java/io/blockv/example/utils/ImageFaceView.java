@@ -7,11 +7,11 @@ import android.widget.ImageView;
 import io.blockv.common.model.Face;
 import io.blockv.common.model.Resource;
 import io.blockv.common.model.Vatom;
-import io.blockv.common.util.Callable;
 import io.blockv.example.R;
 import io.blockv.face.client.FaceBridge;
 import io.blockv.face.client.FaceView;
 import io.blockv.face.client.ViewFactory;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -66,8 +66,8 @@ public class ImageFaceView extends FaceView {
         getBridge()
           .getResourceManager()
           .getBitmap(resource, imageView.getWidth(), imageView.getHeight())
-          .returnOn(Callable.Scheduler.MAIN)
-          .call(image -> {
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(image -> {
             imageView.setImageBitmap(image);
             handler.onComplete();//call once load completes successfully
           }, handler::onError));

@@ -4,17 +4,14 @@ import android.view.LayoutInflater;
 import android.widget.TextView;
 import io.blockv.common.model.Face;
 import io.blockv.common.model.Vatom;
-import io.blockv.common.util.Cancellable;
-import io.blockv.common.util.CompositeCancellable;
 import io.blockv.example.R;
 import io.blockv.example.feature.BaseScreen;
 import io.blockv.example.feature.details.VatomMetaActivity;
 import io.blockv.example.support.LiveVatomView;
 import io.blockv.face.client.FaceManager;
 import io.blockv.face.client.VatomView;
-import timber.log.Timber;
+import io.reactivex.Flowable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ActivatedScreenImpl extends BaseScreen implements ActivatedScreen {
@@ -65,40 +62,7 @@ public class ActivatedScreenImpl extends BaseScreen implements ActivatedScreen {
       vatomManager,
       faceManager,
       eventManager)
-      .setSelectionProcedure((selectedVatom, displayUrls) -> {
-        List<Face> faces = selectedVatom.getFaces();
-        Face selected = null;
-        int rating = -1;
-        for (Face face : faces) {
-
-          //we only want to display a face in view mode card
-          if (!face.getProperty().getViewMode().equalsIgnoreCase("card"))
-            continue;
-
-          //only want to select a native face
-          if (!face.isNative())
-            continue;
-
-          //check that the required faceview is registered
-          if (!displayUrls.contains(face.getProperty().getDisplayUrl().toLowerCase()))
-            continue;
-
-          int value;
-          //Selected a face with platform Android over generic
-          if (face.getProperty().getPlatform().equalsIgnoreCase("android")) {
-            value = 2;
-          } else if (face.getProperty().getPlatform().equalsIgnoreCase("generic")) {
-            value = 1;
-          } else
-            continue;//unsupported platform
-
-          if (value > rating) {
-            rating = value;
-            selected = face;
-          }
-        }
-        return selected;
-      });
+      .setSelectionProcedure(FaceManager.EmbeddedProcedure.CARD.getProcedure());
   }
 
   @Override
@@ -107,30 +71,18 @@ public class ActivatedScreenImpl extends BaseScreen implements ActivatedScreen {
   }
 
   @Override
-  public Cancellable setVatom(Vatom vatom) {
+  public Flowable<Vatom> setVatom(Vatom vatom) {
 
     name.setText(vatom.getProperty().getTitle());
     description.setText(vatom.getProperty().getDescription());
 
-    CompositeCancellable cancellable = new CompositeCancellable();
-    cancellable.add(
-      liveIcon
-        .load(vatom)
-        .call(update -> {
-        }, throwable -> Timber.e(throwable.getMessage())));
-
-   cancellable.add(
-      liveEngaged.load(vatom)
-      .call(update -> {
-        Timber.e(update.toString());
-      }, throwable -> Timber.e(throwable.getMessage())));
-
-    cancellable.add(
-      liveCard.load(vatom)
-        .call(update -> {
-        }, throwable -> Timber.e(throwable.getMessage())));
-
-    return cancellable;
+    return liveIcon.load(vatom)
+      .onErrorReturn(throwable -> vatom)
+      .mergeWith(liveEngaged.load(vatom)
+        .onErrorReturn(throwable -> vatom))
+      .mergeWith(liveCard.load(vatom)
+        .onErrorReturn(throwable -> vatom)
+      );
   }
 
   @Override

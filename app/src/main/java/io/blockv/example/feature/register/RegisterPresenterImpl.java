@@ -5,7 +5,7 @@ import android.view.View;
 import io.blockv.common.builder.RegistrationBuilder;
 import io.blockv.example.R;
 import io.blockv.example.feature.BasePresenter;
-
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class RegisterPresenterImpl extends BasePresenter implements RegisterPresenter {
 
@@ -22,8 +22,6 @@ public class RegisterPresenterImpl extends BasePresenter implements RegisterPres
                                     String password,
                                     String email,
                                     String phoneNumber) {
-    screen.showDialog(getString(R.string.register_page_dialog_registering));
-
 // register a new user, a valid email or phone number is required
     collect(
       userManager.register(new RegistrationBuilder()
@@ -33,14 +31,15 @@ public class RegisterPresenterImpl extends BasePresenter implements RegisterPres
         .addEmail(email)
         .addPhoneNumber(phoneNumber.replaceAll("[()\\-\\s]", ""))
         .build())
-        .call(user -> {
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(val-> screen.showDialog(getString(R.string.register_page_dialog_registering)))
+        .doFinally(screen::hideDialog)
+        .subscribe(user -> {
           //on success you will receive a user model containing the user's details
           screen.showToast(getString(R.string.register_page_success));
           screen.startVerifyActivity(phoneNumber.replaceAll("[()\\-\\s]", ""), email);
-          screen.hideDialog();
         }, throwable -> {
           screen.showToast(throwable.getMessage());
-          screen.hideDialog();
         }));
   }
 

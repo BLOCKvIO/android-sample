@@ -1,16 +1,15 @@
 package io.blockv.example.support;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import io.blockv.common.model.Vatom;
-import io.blockv.common.util.Callable;
-import io.blockv.common.util.Cancellable;
 import io.blockv.core.client.manager.EventManager;
 import io.blockv.core.client.manager.VatomManager;
 import io.blockv.face.client.FaceManager;
-import io.blockv.face.client.FaceView;
 import io.blockv.face.client.VatomView;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
 
 import java.util.concurrent.Semaphore;
@@ -78,9 +77,9 @@ public class LiveVatomView {
     return this;
   }
 
-  public Callable<Vatom> load(Vatom vatom) {
+  public Flowable<Vatom> load(Vatom vatom) {
     this.vatom = vatom;
-
+    Semaphore updateLock = new Semaphore(1);
     return faceManager
       .load(vatom)
       .setFaceSelectionProcedure(selectionProcedure)
@@ -88,50 +87,32 @@ public class LiveVatomView {
       .setErrorView(errorView)
       .setLoaderDelay(loaderDelay)
       .into(vatomView)
-      .flatMap(view -> {
-        Vatom currentVatom = view.getVatom();
-        return Callable.Companion.<Vatom>create(emitter -> {
-          emitter.onResult(currentVatom);
-          Semaphore updateLock = new Semaphore(1);
-          Cancellable cancel = eventManager
-            .getVatomStateEvents()
-            .filter(event -> event.getPayload() != null && event.getPayload().getVatomId().equals(currentVatom.getId()))
-            .flatMap(update -> {
-              try {
-                updateLock.acquire();
-              } catch (InterruptedException e) {
-                e.printStackTrace();
-              }
-              return vatomManager.updateVatom(LiveVatomView.this.vatom, update.getPayload());
-            })
-            .returnOn(Callable.Scheduler.COMP)
-            .call(newVatom -> {
-              LiveVatomView.this.vatom = newVatom;
-              updateLock.release();
-              emitter.onResult(newVatom);
-            }, throwable -> {
-              updateLock.release(1000);
-              emitter.onError(throwable);
-            });
-          emitter.doOnCompletion(() -> {
-            cancel.cancel();
-            updateLock.release(1000);
-            return Unit.INSTANCE;
-          });
-          return Unit.INSTANCE;
-        });
+      .toFlowable()
+      .flatMap(view -> eventManager.getVatomStateEvents())
+      .filter(event ->
+        event.getPayload() != null
+          && event.getPayload().getVatomId().equals(this.vatom.getId()))
+      .observeOn(Schedulers.computation())
+      .flatMap(event -> {
+        updateLock.acquire();
+        return vatomManager
+          .updateVatom(this.vatom, event.getPayload())
+          .map(updated -> {
+            this.vatom = updated;
+            return updated;
+          })
+          .doFinally(updateLock::release)
+          .toFlowable();
       })
-      .flatMap(update ->
-      {
-        LiveVatomView.this.vatom = update;
-        return faceManager
-          .load(update)
-          .setFaceSelectionProcedure(selectionProcedure)
-          .setLoaderView(loaderView)
-          .setLoaderView(errorView)
-          .setLoaderDelay(loaderDelay)
-          .into(vatomView);
-      })
-      .map(FaceView::getVatom);
+      .observeOn(AndroidSchedulers.mainThread())
+      .flatMap(update -> faceManager
+        .load(update)
+        .setFaceSelectionProcedure(selectionProcedure)
+        .setLoaderView(loaderView)
+        .setLoaderView(errorView)
+        .setLoaderDelay(loaderDelay)
+        .into(vatomView)
+        .map(vatomView -> update)
+        .toFlowable());
   }
 }

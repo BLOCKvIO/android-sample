@@ -15,7 +15,6 @@ public class LandingPresenterImpl extends BasePresenter implements LandingPresen
   @Override
   public void onCreate() {
     //if there is a logged in user navigate to inventory
-    Timber.e("checking if logged in");
     if (userManager.isLoggedIn()) {
       screen.startInventoryActivity();
     }
