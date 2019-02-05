@@ -30,7 +30,7 @@ public class VatomMetaPresenterImpl extends BasePresenter implements VatomMetaPr
     //get vatom by id
     collect(vatomManager
       .getVatoms(vatomId)
-      .call(vatoms->{
+      .subscribe(vatoms->{
         screen.hideDialog();
         if (vatoms != null && vatoms.size() > 0) {
           screen.setVatom(vatoms.get(0));

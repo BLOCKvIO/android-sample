@@ -17,9 +17,7 @@ import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 
-
 public class ProfileScreenImpl extends BaseScreen implements ProfileScreen {
-
 
   final android.support.v7.widget.Toolbar toolbar;
   final ImageView avatar;

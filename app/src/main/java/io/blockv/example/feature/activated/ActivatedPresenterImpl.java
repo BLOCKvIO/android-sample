@@ -6,7 +6,8 @@ import android.view.MenuItem;
 import io.blockv.example.R;
 import io.blockv.example.constants.Extras;
 import io.blockv.example.feature.BasePresenter;
-import io.blockv.example.support.LiveVatomView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 
 public class ActivatedPresenterImpl extends BasePresenter implements ActivatedPresenter {
@@ -28,20 +29,22 @@ public class ActivatedPresenterImpl extends BasePresenter implements ActivatedPr
       screen.finish();
     }
 
-    screen.showDialog(getString(R.string.vatom_page_loading));
     //get vatom by id
     collect(
       vatomManager.getVatoms(vatomId)
-        .call(vatoms -> {
-          screen.hideDialog();
-          if (vatoms != null && vatoms.size() > 0) {
-            collect(screen.setVatom(vatoms.get(0)));
-          }
-        }, throwable -> {
-          screen.hideDialog();
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(val -> screen.showDialog(getString(R.string.vatom_page_loading)))
+        .doFinally(screen::hideDialog)
+        .filter(vatoms -> vatoms.size() > 0)
+        .map(vatoms -> vatoms.get(0))
+        .toFlowable()
+        .doOnError(throwable -> {
           screen.showToast(throwable.getMessage());
           screen.finish();
-        }));
+        })
+        .flatMap(screen::setVatom)
+        .subscribe(vatom -> {
+        }, Timber::e));
   }
 
   @Override

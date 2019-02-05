@@ -6,7 +6,7 @@ import io.blockv.core.client.manager.UserManager;
 import io.blockv.example.R;
 import io.blockv.example.constants.Extras;
 import io.blockv.example.feature.BasePresenter;
-
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class VerifyPhonePresenterImpl extends BasePresenter implements VerifyPhonePresenter {
 
@@ -24,35 +24,34 @@ public class VerifyPhonePresenterImpl extends BasePresenter implements VerifyPho
 
   @Override
   public void onVerifyButtonClicked(View view, String phoneNumber, String code) {
-
-    screen.showDialog(getString(R.string.verify_page_verifying));
     //attempt to verify the user's phone number
     collect(
       userManager.verifyUserToken(phoneNumber, UserManager.TokenType.PHONE_NUMBER, code)
-        .call(Void -> {
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(val -> screen.showDialog(getString(R.string.verify_page_verifying)))
+        .doFinally(screen::hideDialog)
+        .subscribe(() -> {
           screen.showToast(getString(R.string.verify_page_success));
           screen.startInventoryActivity();
-          screen.hideDialog();
         }, throwable -> {
-          screen.hideDialog();
           screen.showToast(throwable.getMessage());
         }));
   }
 
   @Override
   public void onResendOtpButtonClicked(View view, String phoneNumber) {
-    screen.showDialog(getString(R.string.verify_page_sending));
     //request a new verification code
     collect(
       userManager.resendVerification(phoneNumber, UserManager.TokenType.PHONE_NUMBER)
-      .call(Void -> {
-          screen.hideDialog();
-          screen.showToast(getString(R.string.verify_page_success));
-        },
-        throwable -> {
-          screen.hideDialog();
-          screen.showToast(throwable.getMessage());
-        }));
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(val -> screen.showDialog(getString(R.string.verify_page_sending)))
+        .doFinally(screen::hideDialog)
+        .subscribe(() -> {
+            screen.showToast(getString(R.string.verify_page_success));
+          },
+          throwable -> {
+            screen.showToast(throwable.getMessage());
+          }));
   }
 
   @Override

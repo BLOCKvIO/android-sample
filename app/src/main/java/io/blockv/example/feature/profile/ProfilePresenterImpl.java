@@ -9,16 +9,19 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.media.ExifInterface;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import io.blockv.common.builder.UpdateUserBuilder;
-import io.blockv.common.util.Callable;
+import io.blockv.core.client.manager.UserManager;
 import io.blockv.example.R;
 import io.blockv.example.feature.BasePresenter;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import java.io.InputStream;
-
 
 public class ProfilePresenterImpl extends BasePresenter implements ProfilePresenter {
 
@@ -39,36 +42,28 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
   }
 
   void reload() {
-
-    screen.showDialog(getString(R.string.profile_page_loading));
     //fetch the current logged in user's details
     collect(
       userManager.getCurrentUser()
-        .call(
-          user -> {
-            if (user != null) {
-              screen.setUserId(user.getId());
-              screen.setFirstName(user.getFirstName());
-              screen.setLastName(user.getLastName());
-              screen.setBirthday(user.getBirthday());
-              screen.setAvatar(user.getAvatarUri());
-              //fetch the current user's tokens
-              collect(
-                userManager.getCurrentUserTokens()
-                  .call(tokens -> {
-                    screen.setTokens(tokens);
-                    screen.hideDialog();
-                  }, throwable -> {
-                    screen.hideDialog();
-                    screen.showToast(throwable.getMessage());
-                  }));
-            }
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(val -> screen.showDialog(getString(R.string.profile_page_loading)))
+        .doFinally(screen::hideDialog)
+        .observeOn(Schedulers.io())
+        .flatMap(user -> userManager.getCurrentUserTokens()  //fetch the current user's tokens
+          .map(tokens -> new Pair<>(user, tokens)))
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+          pair -> {
+            screen.setUserId(pair.first.getId());
+            screen.setFirstName(pair.first.getFirstName());
+            screen.setLastName(pair.first.getLastName());
+            screen.setBirthday(pair.first.getBirthday());
+            screen.setAvatar(pair.first.getAvatarUri());
+            screen.setTokens(pair.second);
           },
           throwable -> {
-            screen.hideDialog();
             screen.showToast(throwable.getMessage());
           }));
-
   }
 
   @Override
@@ -87,7 +82,6 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
 
   @Override
   public void onSaveDetailsClick(View view, String firstName, String lastName, String birthday) {
-    screen.showDialog(getString(R.string.profile_page_saving));
     //update the current user's details
     collect(
       userManager.updateCurrentUser(
@@ -96,48 +90,51 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
           .setLastName(lastName)
           .setBirthday(birthday)
           .build()
-      ).call(user -> {
-        screen.hideDialog();
-        screen.setUserId(user.getId());
-        screen.setFirstName(user.getFirstName());
-        screen.setLastName(user.getLastName());
-        screen.setBirthday(user.getBirthday());
-      }, throwable -> {
-        screen.showToast(throwable.getMessage());
-        screen.hideDialog();
-      }));
+      )
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(val -> screen.showDialog(getString(R.string.profile_page_saving)))
+        .doFinally(screen::hideDialog)
+        .subscribe(user -> {
+          screen.setUserId(user.getId());
+          screen.setFirstName(user.getFirstName());
+          screen.setLastName(user.getLastName());
+          screen.setBirthday(user.getBirthday());
+        }, throwable -> screen.showToast(throwable.getMessage())));
   }
 
   @Override
   public void onSavePasswordClick(View view, String password) {
-    screen.showDialog(getString(R.string.profile_page_saving));
     //update current user's password
     collect(
       userManager.updateCurrentUser(new UpdateUserBuilder()
         .setPassword(password)
         .build()
-      ).call(user -> screen.hideDialog(), throwable -> {
-        screen.showToast(throwable.getMessage());
-        screen.hideDialog();
-      }));
+      )
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(val -> screen.showDialog(getString(R.string.profile_page_saving)))
+        .doFinally(screen::hideDialog)
+        .subscribe(user -> screen.hideDialog(), throwable -> {
+          screen.showToast(throwable.getMessage());
+          screen.hideDialog();
+        }));
   }
 
   @Override
   public void onLogOutClick(View view) {
 
     onDestroy();
-    screen.showDialog(getString(R.string.profile_page_logging_out));
-
     //log the current user out
     userManager
       .logout()
-      .call(ok -> {
+      .observeOn(AndroidSchedulers.mainThread())
+      .doOnSubscribe(val -> screen.showDialog(getString(R.string.profile_page_logging_out)))
+      .doFinally(() -> {
         screen.hideDialog();
         screen.restartApp();
+      })
+      .subscribe(() -> {
       }, throwable -> {
         screen.showToast(throwable.getMessage());
-        screen.hideDialog();
-        screen.restartApp();
       });
   }
 
@@ -152,27 +149,15 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
       if (resultCode == Activity.RESULT_OK) {
         if (requestCode == PHOTO_REQUEST_CODE) {
           Uri selectedImage = data.getData();
-          screen.showDialog(getString(R.string.profile_page_uploading));
           collect(
             loadAvatar(selectedImage)
-              .call(avatar -> {
-                //update the current user's avatar
-                collect(
-                  userManager.uploadAvatar(avatar)
-                    .call(
-                      Void -> {
-                        screen.hideDialog();
-                        reload();
-
-                      },
-                      throwable -> {
-                        screen.hideDialog();
-                        screen.showToast(throwable.getMessage());
-                      }));
-              }, throwable -> {
-                screen.hideDialog();
-                screen.showToast(throwable.getMessage());
-              }));
+              .doOnSubscribe(val -> screen.showDialog(getString(R.string.profile_page_uploading)))
+              .doFinally(screen::hideDialog)
+              .observeOn(Schedulers.io())
+              .flatMapCompletable(avatar -> userManager.uploadAvatar(avatar))//update the current user's avatar
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(this::reload,
+                throwable -> screen.showToast(throwable.getMessage())));
         }
       }
     } catch (Exception e) {
@@ -185,9 +170,9 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
    *
    * @param uri is the uri an image file
    */
-  Callable<Bitmap> loadAvatar(Uri uri) {
+  Single<Bitmap> loadAvatar(Uri uri) {
 
-    return Callable.Companion.<Bitmap>singleResult((Callable.OnSingleResult<Bitmap>) () -> {
+    return Single.fromCallable(() -> {
 
       Matrix matrix = new Matrix();
       try {
@@ -244,7 +229,9 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
       }
 
       return out;
-    });
+    })
+      .subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread());
   }
 
   public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -255,7 +242,6 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
       int halfHeight = height / 2;
 
       for (int halfWidth = width / 2; halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth; inSampleSize *= 2) {
-        ;
       }
     }
 

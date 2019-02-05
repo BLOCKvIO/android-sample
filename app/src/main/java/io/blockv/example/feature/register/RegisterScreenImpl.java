@@ -6,7 +6,6 @@ import io.blockv.example.R;
 import io.blockv.example.feature.BaseScreen;
 import io.blockv.example.feature.verify.VerifyActivity;
 
-
 public class RegisterScreenImpl extends BaseScreen implements RegisterScreen {
 
   final android.support.v7.widget.Toolbar toolbar;

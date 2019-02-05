@@ -4,9 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.squareup.picasso.Picasso;
 import io.blockv.common.model.Vatom;
-import io.blockv.core.client.manager.ResourceManager;
 import io.blockv.core.client.manager.VatomManager;
 import io.blockv.example.R;
 import io.blockv.face.client.FaceManager;
@@ -41,7 +39,10 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
 
   @Override
   public void onBindViewHolder(InventoryViewHolder holder, int position) {
-    holder.setVatom(getItem(position));
+    holder.setVatom(getItem(position))
+      .subscribe(() -> {
+      }, throwable -> {
+      });
   }
 
   @Override
