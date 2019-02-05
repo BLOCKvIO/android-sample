@@ -28,7 +28,8 @@ public class BlockvModule {
   @Provides
   public Blockv provideBlockv() {
     Blockv blockv = new Blockv(context, "<replace-with-app-id>");//creates the blockv singleton
-    blockv.getFaceManager().registerFace(ImageFaceView.factory);//register custom face
+    blockv.getFaceManager().registerFace(ImageFaceView.factory);//register custom faceview
+
     // Android's WebGL support was not good in the early versions of Android, so let's limit the
     // 3D face to only show on later versions of Android.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
